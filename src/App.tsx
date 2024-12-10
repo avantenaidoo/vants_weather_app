@@ -1,45 +1,32 @@
 import React, { useState } from 'react';
-import SearchBar from './components/SearchBar';
-import WeatherCard from './components/WeatherCard';
-import WeatherGrid from './components/WeatherGrid';
-import useWeather from './hooks/useWeather';
+import CurrentWeather from './components/CurrentWeather';
 
 const App = () => {
-  const { currentWeather, forecast, history, loading, error, fetchWeather } = useWeather();
-  const [selectedDay, setSelectedDay] = useState(null);
+  const [city, setCity] = useState('New York');
 
-  const handleSearch = (city: string) => {
-    fetchWeather(city);
+  const handleCityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCity(event.target.value);
   };
 
-  const handleDayClick = (date: string) => {
-    const selected = [...forecast, ...history].find(day => day.date === date);
-    setSelectedDay(selected || null);
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
   };
 
   return (
-    <div className="app">
-      <SearchBar onSearch={handleSearch} />
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
-      {currentWeather && (
-        <WeatherCard
-          date={currentWeather.date}
-          temperature={currentWeather.temperature}
-          description={currentWeather.description}
-          icon={currentWeather.icon}
-          onClick={() => {}}
+    <div className="app-container">
+      <h1>Weather App</h1>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="city-input">Enter city name:</label>
+        <input
+          type="text"
+          id="city-input"
+          value={city}
+          onChange={handleCityChange}
+          placeholder="Enter city name"
+          className="city-input"
         />
-      )}
-      <WeatherGrid weatherData={[...forecast, ...history]} onDayClick={handleDayClick} />
-      {selectedDay && (
-        <div className="selected-day-details">
-          <h2>Details for {selectedDay.date}</h2>
-          <p>Temperature: {selectedDay.temperature}°C</p>
-          <p>Description: {selectedDay.description}</p>
-          <img src={selectedDay.icon} alt={selectedDay.description} />
-        </div>
-      )}
+      </form>
+      <CurrentWeather city={city} />
     </div>
   );
 };
