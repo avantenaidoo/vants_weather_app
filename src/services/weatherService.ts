@@ -1,5 +1,3 @@
-
-
 const API_KEY = import.meta.env.VITE_WEATHERSTACK_API_KEY;
 const BASE_URL = 'http://api.weatherstack.com/';
 
@@ -16,14 +14,4 @@ const fetchWeatherData = async (endpoint: string, query: string) => {
 export const getCurrentWeather = async (city: string) => {
   const data = await fetchWeatherData('current', city);
   return data.current;
-};
-
-export const get3DayForecast = async (city: string) => {
-  const data = await fetchWeatherData('forecast', city);
-  return data.forecast;
-};
-
-export const get3DayHistory = async (city: string) => {
-  const data = await fetchWeatherData('historical', city);
-  return data.historical;
 };
