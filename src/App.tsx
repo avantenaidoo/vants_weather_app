@@ -25,6 +25,7 @@ const App = () => {
           placeholder="Enter city name"
           className="city-input"
         />
+        <button type="submit" className="search-button">Search</button>
       </form>
       <CurrentWeather city={city} />
     </div>
