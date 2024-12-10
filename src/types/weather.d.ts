@@ -1,16 +1,16 @@
-interface WeatherLocation {
-    name: string;
-}
-  
-interface CurrentWeather {
+export interface WeatherData {
     temperature: number;
-    weather_descriptions: string[];
-    humidity: number;
     wind_speed: number;
-}
-  
-interface WeatherData {
-    location: WeatherLocation;
-    current: CurrentWeather;
-}
+    precip: number;
+    pressure: number;
+    weather_icons: string[];
+    weather_descriptions: string[];
+    location: {
+      name: string;
+      country: string;
+      region: string;
+      localtime: string;
+    };
+    // Can add other relevant fields check API response
+  }
   
