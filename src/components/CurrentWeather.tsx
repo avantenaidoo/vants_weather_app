@@ -1,7 +1,11 @@
 import React from 'react';
 import useWeatherData from '../hooks/useWeatherData';
 
-const CurrentWeather: React.FC<{ city: string }> = ({ city }) => {
+interface CurrentWeatherProps {
+  city: string;
+}
+
+const CurrentWeather = ({ city }: CurrentWeatherProps) => {
   const { weatherData, loading, error } = useWeatherData(city);
 
   if (loading) return <p>Loading...</p>;
