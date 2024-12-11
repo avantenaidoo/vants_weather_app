@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Archivo', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -92,14 +92,12 @@ button:focus-visible {
 .search-input {
   flex: 1;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
   margin-right: 10px;
 }
 
 .search-button {
   padding: 10px 20px;
-  background-color: #8c00ff; /* Vibrant purple button color */
+  background-color: #8c00ff;
   color: #fff;
   border: none;
   border-radius: 5px;
