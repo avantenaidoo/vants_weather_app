@@ -13,3 +13,8 @@
     color: #fff;
 }
 
+.skip-link:focus,
+.skip-link:active {
+    top: auto;
+    left: auto;
+}
