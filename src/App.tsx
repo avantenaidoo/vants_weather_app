@@ -12,7 +12,7 @@ const App = () => {
   console.log('testing error ', errorMessage)
 
   const handleSearch = (city: string) => {
-    console.log('City updated in App:', city);
+
     setCity(city); 
   };
 
@@ -23,11 +23,6 @@ const App = () => {
       {/* Pass handleSearch function and loading state to SearchBar */}
       <SearchBar onSearch={handleSearch} loading={loading} />
 
-      {/* Skip link for accessibility not applicable till history and forcast ready
-      <a href="#CurrentWeather" className="skip-link">
-        Skip to Current Conditions
-      </a> */}
-
       {/* Show weather data in CurrentWeather */}
       <CurrentWeather weatherData={weatherData} errorMessage={errorMessage} />
     </div>
@@ -35,5 +30,3 @@ const App = () => {
 };
 
 export default App;
-
-// Forecast weather currently being developed

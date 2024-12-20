@@ -48,7 +48,3 @@ export interface WeatherStackAPIResponse {
   success: boolean;
   error: {code, info}
 }
-
-export interface errorMessage {
-  errorMessage: Error | null;
-}

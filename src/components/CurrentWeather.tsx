@@ -8,14 +8,14 @@ type CurrentWeatherProps = {
 };
 
 const CurrentWeather = ({ weatherData, errorMessage }: CurrentWeatherProps) => {
-  console.log('Error Message:', errorMessage?.message);
+
   const displayMessage = errorMessage?.message;
 
   // If there's no weather data and there's an error message, show the error
   if (!weatherData && errorMessage) {
     return (
       <div className="current-display bg-slate-50 bg-opacity-25 p-3 rounded-xl shadow-lg max-w-lg mx-auto mb-3 transition-all duration-500 ease-in-out transform" role="region" aria-labelledby="CurrentWeather">
-        <p className='display-error font-bold text-lg italic text-gray-950'>Error: {displayMessage}</p>
+        <p className='display-error font-bold text-sm italic text-gray-950'>Error: {displayMessage}</p>
       </div>
     );
   }
@@ -37,7 +37,7 @@ const CurrentWeather = ({ weatherData, errorMessage }: CurrentWeatherProps) => {
   return (
     <div className="current-display bg-slate-50 bg-opacity-25 p-3 rounded-xl shadow-lg max-w-lg mx-auto mb-3 transition-all duration-500 ease-in-out transform" role="region" aria-labelledby="CurrentWeather">
       {errorMessage && (
-        <p className='display-error font-extrabold text-3xl italic'>Error: {displayMessage}</p>
+        <p className='display-error text-xs italic'>Error: {displayMessage}</p>
       )}
       <h2 className="font-bold text-center mb-6">Current Conditions</h2>
 
