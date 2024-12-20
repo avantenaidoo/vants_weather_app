@@ -26,7 +26,7 @@ const fetchWeatherData = async (query: string): Promise<WeatherStackAPIResponse 
       if (data.error.code === 601) throw new Error('Invalid city entered.');
       if (data.error.code === 404) throw new Error('Invalid location.');
       if (data.error.code === 429) throw new Error('API monthly rate limit reached. Please try again next month.')
-      throw new Error(`${data.error.info}`);
+      throw new Error(`Request failed please try later...`);
     }
 
     return data;  
