@@ -1,36 +1,73 @@
-import React from 'react';
-import useWeatherData from '../hooks/useWeatherData';
+import { WeatherData } from '../types/weather';
+import { formatDate } from '../utils/formatDate';
+import '../styles/components/currentWeather.css';
 
-interface CurrentWeatherProps {
-  city: string;
-}
+type CurrentWeatherProps = {
+  weatherData: WeatherData | null;
+  errorMessage: Error | null;
+};
 
-const CurrentWeather = ({ city }: CurrentWeatherProps) => {
-  const { weatherData, loading, error } = useWeatherData(city);
+const CurrentWeather = ({ weatherData, errorMessage }: CurrentWeatherProps) => {
+  console.log('Error Message:', errorMessage?.message);
+  const displayMessage = errorMessage?.message;
 
-  console.log('weatherData:', weatherData); // Log the weather data
+  // If there's no weather data and there's an error message, show the error
+  if (!weatherData && errorMessage) {
+    return (
+      <div className="current-display bg-slate-50 bg-opacity-25 p-3 rounded-xl shadow-lg max-w-lg mx-auto mb-3 transition-all duration-500 ease-in-out transform" role="region" aria-labelledby="CurrentWeather">
+        <p className='display-error font-bold text-lg italic text-gray-950'>Error: {displayMessage}</p>
+      </div>
+    );
+  }
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-  if (!weatherData) return <p>No weather data available.</p>;
+  // If there's no weather data and no error, return null (render nothing)
+  if (!weatherData) return null;
+
+  console.log('data display', weatherData);
+
+  // Destructure the weather data safely
+  const { location, current } = weatherData;
+  const weatherIcon = current?.weather_icons?.[0];
+  const weatherDescription = current?.weather_descriptions?.[0];
+  const { name, country, localtime } = location || {}; // Default to empty object if location is null
+  const { temperature, wind_speed, precip, pressure, humidity, feelslike } = current || {}; // Default to empty object if current is null
+
+  const displayDate = formatDate(localtime);
 
   return (
-    <div className="bg-white p-4 rounded shadow-md text-black"> {/* Added text-black class */}
-      <div className="flex flex-col items-center">
-        {weatherData.weather_icons && weatherData.weather_icons[0] && (
-          <img src={weatherData.weather_icons[0]} alt="Weather Icon" className="w-16 h-16 mb-2" />
-        )}
-        <p className="text-4xl font-bold">{weatherData.temperature}°C</p>
+    <div className="current-display bg-slate-50 bg-opacity-25 p-3 rounded-xl shadow-lg max-w-lg mx-auto mb-3 transition-all duration-500 ease-in-out transform" role="region" aria-labelledby="CurrentWeather">
+      {errorMessage && (
+        <p className='display-error font-extrabold text-3xl italic'>Error: {displayMessage}</p>
+      )}
+      <h2 className="font-bold text-center mb-6">Current Conditions</h2>
 
-        <div className='text-center'>
-          <h3 className="text-2xl font-bold">{weatherData.location?.name}</h3>
-          <p className="text-lg">{weatherData.location?.region}, {weatherData.location?.country}</p> {/* Added region and country */}
-          <p>Local Time: {weatherData.location?.localtime}</p>
-          <p className="text-lg">{weatherData.weather_descriptions && weatherData.weather_descriptions[0]}</p>
-          <p>Wind: {weatherData.wind_speed} km/h</p>
-          <p>Precipitation: {weatherData.precip} mm</p>
-          <p>Pressure: {weatherData.pressure} mb</p> 
-        </div>
+      <div className="flex justify-center items-center space-x-11 mb-6">
+        {/* Temperature */}
+        <p className="temp-result text-6xl text-center transition-opacity duration-500 ease-in-out opacity-100">
+          {temperature}°<span className="text-xl">C</span>
+        </p>
+
+        {/* Weather Icon */}
+        {weatherIcon && (
+          <img className="weather-icon object-contain transition-opacity duration-500 ease-in-out opacity-100" src={weatherIcon} alt={`Weather Icon showing ${weatherDescription}`} />
+        )}
+      </div>
+
+      {/* Location */}
+      <div className="text-center transition-all duration-500 ease-in-out opacity-100">
+        <h3 className="text-2xl font-bold">{name}</h3>
+        <p className="text-lg">{country}</p>
+        <p className="text-sm">{displayDate}</p>
+      </div>
+
+      {/* Weather Description and Other Details */}
+      <div className="text-center font-normal mt-4 transition-all duration-500 ease-in-out opacity-100">
+        <p className="text-lg font-bold">{weatherDescription}</p>
+        <p>Wind: {wind_speed} km/h</p>
+        <p>Precipitation: {precip} mm</p>
+        <p>Pressure: {pressure} mb</p>
+        <p>Humidity: {humidity}%</p>
+        <p>Feels Like: {feelslike}°C</p>
       </div>
     </div>
   );

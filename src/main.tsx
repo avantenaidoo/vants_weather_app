@@ -1,10 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
+import './styles/index.css'
 import App from './App.tsx'
 //import * as serviceWorker from './serviceWorker.ts'
 
-if ('serviceWorker' in navigator) {
+if ('' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/service-worker.js').then(registration => {
       console.log('ServiceWorker registration successful with scope: ', registration.scope);
