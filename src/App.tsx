@@ -9,7 +9,6 @@ const App = () => {
   const [city, setCity] = useState<string>(''); 
 
   const { weatherData, loading, errorMessage } = useWeatherData(city);
-  console.log('testing error ', errorMessage)
 
   const handleSearch = (city: string) => {
 

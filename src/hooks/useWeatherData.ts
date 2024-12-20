@@ -8,7 +8,7 @@ const useWeatherData = (city: string) => {
   const [errorMessage, setErrorMessage] = useState<Error | null>(null);
 
   useEffect(() => {
-    // If city is not provided, do not fetch weather data
+
     if (!city) return;
     setWeatherData(null);
 
@@ -17,26 +17,25 @@ const useWeatherData = (city: string) => {
       setErrorMessage(null);
 
       try {
-        console.log('Fetching weather for city:', city);
-        const data = await getCurrentWeather(city); // Fetch weather data
+        const data = await getCurrentWeather(city); 
         setWeatherData(data); 
         
       } catch (error) {
         if (error instanceof Error) {
-          console.log('Caught error:', error);
-          setErrorMessage(error); // Set specific error if it's a known Error type
+
+          setErrorMessage(error); 
         } else {
           console.log('Unknown error:', error);
           setErrorMessage(new Error('An unknown error occurred while fetching weather data.')); // Generic error handling
         }
       } finally {
-        setLoading(false); // Set loading to false after the request is complete
+        setLoading(false); 
       }
     };
 
-    getWeatherData(); // Call the function to fetch weather data
+    getWeatherData(); 
 
-  }, [city]); // Only re-fetch when the city changes and it's not an empty string
+  }, [city]); 
 
   return { weatherData, loading, errorMessage };
 };

@@ -5,7 +5,7 @@ const BASE_URL = 'https://api.weatherstack.com/current';
 
 const fetchWeatherData = async (query: string): Promise<WeatherStackAPIResponse | null> => {
   if (!API_KEY || !query) {
-    throw new Error('API access key not found.')
+    throw new Error('API access key not found.');
   }
 
   const url = `${BASE_URL}?access_key=${API_KEY}&query=${query}`;
@@ -14,14 +14,14 @@ const fetchWeatherData = async (query: string): Promise<WeatherStackAPIResponse 
     const response = await fetch(url);
     
     if (!response.ok) {
-      console.log(response.status);
+      //console.log(response.status);
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
     const data: WeatherStackAPIResponse = await response.json();
 
     if (data.success === false) {
-      // Handle specific API errors
+      //Known errors from the API
       if (data.error.code === 101) throw new Error('Invalid API access key used.');
       if (data.error.code === 601) throw new Error('Invalid city entered.');
       if (data.error.code === 404) throw new Error('Invalid location.');
@@ -36,11 +36,11 @@ const fetchWeatherData = async (query: string): Promise<WeatherStackAPIResponse 
       
       throw new Error('Unable to fetch data. Please check your connection.');
     } else {
-      console.error('Error during fetch:', error);
+
       throw error;  
     }
   } finally {
-    console.log('Fetch attempt completed');
+    //console.log('Fetch attempt completed'); 
   }
 };
 
@@ -48,27 +48,23 @@ export const getCurrentWeather = async (city: string): Promise<WeatherData | nul
   try {
     const data = await fetchWeatherData(city);
 
-    // If fetchWeatherData returns null, it indicates the fetch couldn't happen
     if (!data || !data.request || !data.location || !data.current ) {
-      console.error('Weather data incomplete or missing.');
-      return null; // Return early or show a message to the user
+
+      return null; 
     }
 
-    // Handle valid data here
     const { request, location, current } = data;
-    console.log('Weather data:', { request, location, current });
 
-    // Return the formatted weather data
     return {
       request,
       location,
       current,
     };
   } catch (error) {
-    console.error('Error in getCurrentWeather:', error);
-    // Handle unknown or unexpected errors, if needed
+    console.log('Unable to get weather data.', error);
+
     throw error;
   } finally {
-    console.log('Weather fetch attempt completed');
+    //console.log('Weather fetch attempt completed');
   }
 };

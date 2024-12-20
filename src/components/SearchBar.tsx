@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { TbCloudSearch } from 'react-icons/tb';
-import { SiApachecloudstack } from 'react-icons/si';
 import '../styles/components/a11y.css';
 import '../styles/components/searchBar.css';
 
@@ -33,7 +32,7 @@ const SearchBar = ({ onSearch, loading }: SearchBarProps) => {
       setError('Only letters and spaces.');
       return;
     }
-    onSearch(city);  // Pass the valid city to the parent component
+    onSearch(city);  
   };
 
 
@@ -54,18 +53,13 @@ const SearchBar = ({ onSearch, loading }: SearchBarProps) => {
 
       <button type="submit" className="search-button flex items-center transform translate-x-[-6px]" aria-label="Submit Search">
         <TbCloudSearch
-          className={`button stroke-[1.5] ${loading ? 'animate-spinScaleFade' : 'hidden'}`}
+          className={`button stroke-[1.5] ${loading ? 'animate-spinScaleFade' : ''}`}
           size={40}
-        />
-        <SiApachecloudstack
-          aria-hidden="true"
-          className={`icon stroke-[0.13px] cursor-none ${loading || error ? 'hidden' : 'animate-scaleUpFadeIn'}`}
-          size={50}
         />
       </button>
 
       {error && (
-        <div className="display-alert absolute left-6 transform -translate-y-4 text-lg text-nowrap ml-1" role="alert" aria-live="assertive">
+        <div className="display-alert text-bol absolute left-7 transform -translate-y-12 text-lg text-nowrap ml-1" role="alert" aria-live="assertive">
           {error}
         </div>
       )}

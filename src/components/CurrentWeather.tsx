@@ -11,7 +11,7 @@ const CurrentWeather = ({ weatherData, errorMessage }: CurrentWeatherProps) => {
 
   const displayMessage = errorMessage?.message;
 
-  // If there's no weather data and there's an error message, show the error
+
   if (!weatherData && errorMessage) {
     return (
       <div className="current-display bg-slate-50 bg-opacity-25 p-3 rounded-xl shadow-lg max-w-lg mx-auto mb-3 transition-all duration-500 ease-in-out transform" role="region" aria-labelledby="CurrentWeather">
@@ -20,17 +20,16 @@ const CurrentWeather = ({ weatherData, errorMessage }: CurrentWeatherProps) => {
     );
   }
 
-  // If there's no weather data and no error, return null (render nothing)
   if (!weatherData) return null;
 
   console.log('data display', weatherData);
 
-  // Destructure the weather data safely
+
   const { location, current } = weatherData;
   const weatherIcon = current?.weather_icons?.[0];
   const weatherDescription = current?.weather_descriptions?.[0];
-  const { name, country, localtime } = location || {}; // Default to empty object if location is null
-  const { temperature, wind_speed, precip, pressure, humidity, feelslike } = current || {}; // Default to empty object if current is null
+  const { name, country, localtime } = location || {}; 
+  const { temperature, wind_speed, precip, pressure, humidity, feelslike } = current || {}; 
 
   const displayDate = formatDate(localtime);
 
