@@ -25,11 +25,14 @@ const SearchBar = ({ onSearch, loading }: SearchBarProps) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     
-    if (city.trim() === '') {
+    // Check for empty string or string with only spaces
+    if (!city.trim()) {
       setError('Please enter a city name.');
       return;
-    } else if (/[^a-zA-Z\s]/.test(city)) {
-      setError('Only letters and spaces.');
+    } 
+    // Check for invalid characters or multiple spaces
+    if (/[^a-zA-Z\s]/.test(city) || /\s{2,}/.test(city)) {
+      setError('Only letters and single spaces.');
       return;
     }
     onSearch(city);  

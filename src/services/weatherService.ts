@@ -6,6 +6,14 @@ const BASE_URL = 'https://api.weatherstack.com/current';
 const fetchWeatherData = async (query: string): Promise<WeatherStackAPIResponse | null> => {
   if (!API_KEY || !query) {
     throw new Error('API access key not found.');
+  } 
+
+  if (!query.trim()) {
+    throw new Error('Please enter a city name.');
+  }
+
+  if (/[^a-zA-Z\s]/.test(query) || /\s{2,}/.test(query)) {
+    throw new Error('Only letters and single spaces.');
   }
 
   const url = `${BASE_URL}?access_key=${API_KEY}&query=${query}`;
@@ -26,7 +34,7 @@ const fetchWeatherData = async (query: string): Promise<WeatherStackAPIResponse 
       if (data.error.code === 601) throw new Error('Invalid city entered.');
       if (data.error.code === 404) throw new Error('Invalid location.');
       if (data.error.code === 429) throw new Error('API monthly rate limit reached. Please try again next month.')
-      throw new Error(`Request failed please try later...`);
+      throw new Error(`Request failed please try again...`);
     }
 
     return data;  

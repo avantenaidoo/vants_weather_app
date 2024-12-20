@@ -8,7 +8,7 @@ const App = () => {
   
   const [city, setCity] = useState<string>(''); 
 
-  const { weatherData, loading, errorMessage } = useWeatherData(city);
+  const { weatherData, loading, error } = useWeatherData(city);
 
   const handleSearch = (city: string) => {
 
@@ -23,7 +23,7 @@ const App = () => {
       <SearchBar onSearch={handleSearch} loading={loading} />
 
       {/* Show weather data in CurrentWeather */}
-      <CurrentWeather weatherData={weatherData} errorMessage={errorMessage} />
+      <CurrentWeather weatherData={weatherData} error={error} />
     </div>
   );
 };

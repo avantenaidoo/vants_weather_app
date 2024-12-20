@@ -46,5 +46,5 @@ export interface WeatherStackAPIResponse {
   location: Location;
   current: Current;
   success: boolean;
-  error: {code, info}
+  error: {code: number, info: string};
 }

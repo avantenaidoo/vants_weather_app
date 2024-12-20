@@ -5,16 +5,16 @@ import { WeatherData } from '../types/weather';
 const useWeatherData = (city: string) => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState<Error | null>(null);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
 
     if (!city) return;
     setWeatherData(null);
+    setError(null);
 
     const getWeatherData = async () => {
       setLoading(true);
-      setErrorMessage(null);
 
       try {
         const data = await getCurrentWeather(city); 
@@ -23,10 +23,10 @@ const useWeatherData = (city: string) => {
       } catch (error) {
         if (error instanceof Error) {
 
-          setErrorMessage(error); 
+          setError(error); 
         } else {
           console.log('Unknown error:', error);
-          setErrorMessage(new Error('An unknown error occurred while fetching weather data.')); // Generic error handling
+          setError(new Error('An unknown error occurred while fetching weather data.')); // Generic error handling
         }
       } finally {
         setLoading(false); 
@@ -37,7 +37,7 @@ const useWeatherData = (city: string) => {
 
   }, [city]); 
 
-  return { weatherData, loading, errorMessage };
+  return { weatherData, loading, error };
 };
 
 export default useWeatherData;

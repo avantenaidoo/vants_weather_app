@@ -4,15 +4,15 @@ import '../styles/components/currentWeather.css';
 
 type CurrentWeatherProps = {
   weatherData: WeatherData | null;
-  errorMessage: Error | null;
+  error: Error | null;
 };
 
-const CurrentWeather = ({ weatherData, errorMessage }: CurrentWeatherProps) => {
+const CurrentWeather = ({ weatherData, error }: CurrentWeatherProps) => {
 
-  const displayMessage = errorMessage?.message;
+  const displayMessage = error?.message;
 
 
-  if (!weatherData && errorMessage) {
+  if (error) {
     return (
       <div className="current-display bg-slate-50 bg-opacity-25 p-3 rounded-xl shadow-lg max-w-lg mx-auto mb-3 transition-all duration-500 ease-in-out transform" role="region" aria-labelledby="CurrentWeather">
         <p className='display-error font-bold text-sm italic text-gray-950'>Error: {displayMessage}</p>
@@ -33,9 +33,9 @@ const CurrentWeather = ({ weatherData, errorMessage }: CurrentWeatherProps) => {
 
   return (
     <div className="current-display bg-slate-50 bg-opacity-25 p-3 rounded-xl shadow-lg max-w-lg mx-auto mb-3 transition-all duration-500 ease-in-out transform" role="region" aria-labelledby="CurrentWeather">
-      {errorMessage && (
+      {/* {errorMessage && (
         <p className='display-error text-xs italic'>Error: {displayMessage}</p>
-      )}
+      )} */}
       <h2 className="font-bold text-center mb-6">Current Conditions</h2>
 
       <div className="flex justify-center items-center space-x-11 mb-6">
