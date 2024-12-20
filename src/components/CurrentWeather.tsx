@@ -22,8 +22,6 @@ const CurrentWeather = ({ weatherData, errorMessage }: CurrentWeatherProps) => {
 
   if (!weatherData) return null;
 
-  console.log('data display', weatherData);
-
 
   const { location, current } = weatherData;
   const weatherIcon = current?.weather_icons?.[0];
