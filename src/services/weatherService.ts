@@ -4,12 +4,12 @@ const API_KEY = import.meta.env.VITE_WEATHERSTACK_API_KEY;
 const BASE_URL = 'https://api.weatherstack.com/current';
 
 const fetchWeatherData = async (query: string): Promise<WeatherStackAPIResponse | null> => {
-  if (!API_KEY || !query) {
+  if (!API_KEY) {
     throw new Error('API access key not found.');
   } 
 
   if (!query.trim()) {
-    throw new Error('Please enter a city name.');
+    throw new Error('No City name found, please try again.');
   }
 
   if (/[^a-zA-Z\s]/.test(query) || /\s{2,}/.test(query)) {
@@ -29,11 +29,12 @@ const fetchWeatherData = async (query: string): Promise<WeatherStackAPIResponse 
     const data: WeatherStackAPIResponse = await response.json();
 
     if (data.success === false) {
-      //Known errors from the API
+      //Known errors from the WeatherStack API
       if (data.error.code === 101) throw new Error('Invalid API access key used.');
       if (data.error.code === 601) throw new Error('Invalid city entered.');
       if (data.error.code === 404) throw new Error('Invalid location.');
-      if (data.error.code === 429) throw new Error('API monthly rate limit reached. Please try again next month.')
+      if (data.error.code === 104) throw new Error('API monthly rate limit reached. Please try again next month.');
+      console.log(data.error);
       throw new Error(`Request failed please try again...`);
     }
 
