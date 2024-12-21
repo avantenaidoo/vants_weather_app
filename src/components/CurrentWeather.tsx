@@ -14,8 +14,8 @@ const CurrentWeather = ({ weatherData, error }: CurrentWeatherProps) => {
 
   if (error) {
     return (
-      <div className="current-display bg-slate-50 bg-opacity-25 p-3 rounded-xl shadow-lg max-w-lg mx-auto mb-3 transition-all duration-500 ease-in-out transform" role="region" aria-labelledby="CurrentWeather">
-        <p className='display-error font-bold text-sm italic text-gray-950'>Error: {displayMessage}</p>
+      <div className="current-display bg-slate-50 bg-opacity-25 p-3 rounded-xl shadow-lg max-w-lg mx-auto mb-3 transition-all duration-500 ease-in-out transform flex justify-center items-center" role="alert" aria-labelledby="CurrentWeatherError">
+        <p id="CurrentWeatherError" className="display-error font-bold text-sm italic text-gray-950 text-center">Error: {displayMessage}</p>
       </div>
     );
   }
@@ -33,10 +33,8 @@ const CurrentWeather = ({ weatherData, error }: CurrentWeatherProps) => {
 
   return (
     <div className="current-display bg-slate-50 bg-opacity-25 p-3 rounded-xl shadow-lg max-w-lg mx-auto mb-3 transition-all duration-500 ease-in-out transform" role="region" aria-labelledby="CurrentWeather">
-      {/* {errorMessage && (
-        <p className='display-error text-xs italic'>Error: {displayMessage}</p>
-      )} */}
-      <h2 className="font-bold text-center mb-6">Current Conditions</h2>
+      
+      <h2 id="CurrentWeather" className="font-bold text-center mb-6">{name}</h2>
 
       <div className="flex justify-center items-center space-x-11 mb-6">
         {/* Temperature */}
@@ -52,7 +50,6 @@ const CurrentWeather = ({ weatherData, error }: CurrentWeatherProps) => {
 
       {/* Location */}
       <div className="text-center transition-all duration-500 ease-in-out opacity-100">
-        <h3 className="text-2xl font-bold">{name}</h3>
         <p className="text-lg">{country}</p>
         <p className="text-sm">{displayDate}</p>
       </div>

@@ -2,6 +2,11 @@
   color: #e0f7f5;
   text-align: center;
   width: calc(100% - 1.5rem);
+  max-width: 700px;
+  min-height: 100px;
+  max-height: 100%;
+  margin: 0 auto 0.5rem auto;
+  transition: all 0.5s ease-in-out;
 }
 
 .temp-result {
