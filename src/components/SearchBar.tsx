@@ -63,7 +63,7 @@ const SearchBar = ({ onSearch, loading }: SearchBarProps) => {
       </button>
 
       {error && (
-        <div className="display-alert text-bol absolute left-7 transform -translate-y-12 text-lg text-nowrap ml-1" role="alert" aria-live="assertive">
+        <div className="display-alert text-bol absolute left-7 transform -translate-y-[calc(3rem+0.5rem)] text-lg text-nowrap ml-1" role="alert" aria-live="assertive">
           {error}
         </div>
       )}
