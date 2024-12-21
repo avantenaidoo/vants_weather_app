@@ -16,17 +16,24 @@
     border: none;
     margin-right: 1rem;
     background-color: transparent;
-    color: rgb(241, 241, 241);
     width: calc(100% -70px);
     font-size: 1.25rem;
     padding: 0.75rem 0 0.75rem 0.75rem;
     outline: none;
 }
 
-#search::placeholder {
-  color: rgba(241, 241, 241, 0.699) ;
+@media (prefers-color-scheme: light) {
+    #search::placeholder {
+        color: rgba(48, 39, 39, 0.699);
+    }
 }
 
+
+@media (prefers-color-scheme: dark) {
+    #search::placeholder {
+        color: rgba(241, 241, 241, 0.699);
+    }
+}
 .search-button {
     min-width: 48px;
     min-height: 48px;
