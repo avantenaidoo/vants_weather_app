@@ -3,7 +3,6 @@ const urlsToCache = [
   '/',
   '/index.html',
   '/styles/index.css', 
-  '/images/favicon.jpeg', 
   '/images/clouds.png',
   // Add other assets to cache
 ];
