@@ -36,6 +36,7 @@ const SearchBar = ({ onSearch, loading }: SearchBarProps) => {
       return;
     }
     onSearch(city);  
+    setCity('');
   };
 
 
