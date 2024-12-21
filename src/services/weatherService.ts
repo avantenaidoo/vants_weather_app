@@ -9,11 +9,11 @@ const fetchWeatherData = async (query: string): Promise<WeatherStackAPIResponse 
   } 
 
   if (!query.trim()) {
-    throw new Error('No City name found, please try again.');
+    throw new Error('No city name found, please try again.');
   }
 
   if (/[^a-zA-Z\s]/.test(query) || /\s{2,}/.test(query)) {
-    throw new Error('Only letters and single spaces.');
+    throw new Error('Only letters and single spaces are allowed.');
   }
 
   const url = `${BASE_URL}?access_key=${API_KEY}&query=${query}`;
@@ -22,58 +22,58 @@ const fetchWeatherData = async (query: string): Promise<WeatherStackAPIResponse 
     const response = await fetch(url);
     
     if (!response.ok) {
-      //console.log(response.status);
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
     const data: WeatherStackAPIResponse = await response.json();
 
     if (data.success === false) {
-      //Known errors from the WeatherStack API
-      if (data.error.code === 101) throw new Error('Invalid API access key used.');
-      if (data.error.code === 601) throw new Error('Invalid city entered.');
-      if (data.error.code === 404) throw new Error('Invalid location.');
-      if (data.error.code === 104) throw new Error('API monthly rate limit reached. Please try again next month.');
-      console.log(data.error);
-      throw new Error(`Request failed please try again...`);
+      // Known errors from the WeatherStack API
+      switch (data.error.code) {
+        case 101:
+          throw new Error('Invalid API access key used.');
+        case 601:
+          throw new Error('Invalid city entered.');
+        case 404:
+          throw new Error('Invalid location.');
+        case 104:
+          throw new Error('API monthly rate limit reached. Please try again next month.');
+        default:
+          console.log(data.error);
+          throw new Error('Request failed, please try again...');
+      }
+    }
+
+    // Check if the city name in the response matches the query
+    if (data.location.name.toLowerCase() !== query.toLowerCase().trim()) {
+      throw new Error('Invalid city name entered.');
     }
 
     return data;  
 
   } catch (error) {
     if (error instanceof TypeError) {
-      
       throw new Error('Unable to fetch data. Please check your connection.');
+    } else if (error instanceof Error) {
+      throw error;
     } else {
-
-      throw error;  
+      throw new Error('An unknown error occurred.');
     }
-  } finally {
-    //console.log('Fetch attempt completed'); 
   }
 };
 
 export const getCurrentWeather = async (city: string): Promise<WeatherData | null> => {
-  try {
-    const data = await fetchWeatherData(city);
+  const data = await fetchWeatherData(city);
 
-    if (!data || !data.request || !data.location || !data.current ) {
-
-      return null; 
-    }
-
-    const { request, location, current } = data;
-
-    return {
-      request,
-      location,
-      current,
-    };
-  } catch (error) {
-    console.log('Unable to get weather data.', error);
-
-    throw error;
-  } finally {
-    //console.log('Weather fetch attempt completed');
+  if (!data || !data.request || !data.location || !data.current) {
+    return null; 
   }
+
+  const { request, location, current } = data;
+
+  return {
+    request,
+    location,
+    current,
+  };
 };
