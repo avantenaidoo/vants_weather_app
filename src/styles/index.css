@@ -76,3 +76,5 @@ body {
 img {
   display: block;
 }
+
+@media (max-width: 600px) { :root { font-size: 14px; } body { padding: 0.25rem; } .app-container { max-width: 100%; max-height: none; padding: 1rem; border-radius: 5px; box-shadow: none; } }
