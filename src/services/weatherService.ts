@@ -2,9 +2,13 @@ import { WeatherData, WeatherStackAPIResponse } from '../types/weather';
 
 const API_KEY = import.meta.env.VITE_WEATHERSTACK_API_KEY;
 const BASE_URL = 'https://api.weatherstack.com/current';
+const MOCK_DATA_URL = '/mockWeatherData.json';
 
 const fetchWeatherData = async (query: string): Promise<WeatherStackAPIResponse | null> => {
-  if (!API_KEY) {
+  // Force using mock data URL for development
+  const useMockData = true; // Set this to true to use mock data
+
+  if (!API_KEY && !useMockData) {
     throw new Error('API access key not found.');
   } 
 
@@ -16,7 +20,7 @@ const fetchWeatherData = async (query: string): Promise<WeatherStackAPIResponse 
     throw new Error('Only letters and single spaces are allowed.');
   }
 
-  const url = `${BASE_URL}?access_key=${API_KEY}&query=${query}`;
+  const url = useMockData ? MOCK_DATA_URL : `${BASE_URL}?access_key=${API_KEY}&query=${query}`;
   
   try {
     const response = await fetch(url);
@@ -45,8 +49,12 @@ const fetchWeatherData = async (query: string): Promise<WeatherStackAPIResponse 
     }
 
     // Check if the city name in the response matches the query
-    if (data.location.name.toLowerCase() !== query.toLowerCase().trim()) {
-      throw new Error('Invalid city name entered.');
+    const normalizedQuery = query.toLowerCase().trim();
+    const normalizedCityName = data.location.name.toLowerCase().trim();
+    
+    // Allow small variations of query entered by the user
+    if (!normalizedCityName.includes(normalizedQuery)) {
+      throw new Error(`😲 Whoops! ${query} doesn't match weather data. Please check your spelling or try a different city name 😁`);
     }
 
     return data;  
