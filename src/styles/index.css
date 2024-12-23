@@ -30,7 +30,7 @@ body {
   padding: 0.5rem;
   min-width: 320px;
   min-height: 100vh;
-  background-image: url('./images/clouds.png');
+  background-image: url('/images/clouds.png');
   background-size: cover;
 }
 
