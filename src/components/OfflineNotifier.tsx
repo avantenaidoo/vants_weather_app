@@ -20,7 +20,7 @@ const OfflineNotifier = () => {
   return (
     !isOnline && (
       <div className="offline-notifier">
-        <p>You are offline, updates may not be available.</p>
+        <p>You are offline, live updates may not be available.</p>
       </div>
     )
   );
