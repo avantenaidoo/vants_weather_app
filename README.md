@@ -1,62 +1,69 @@
-#Author notes:
+# Vants Weather App
 
-I have made many changes and have run into some issues with my app. Need to fix the issues. Paused dev at 4th attept to retract my steps
+## Contents
 
-- There may be import issues and files not correctly linked
-- Got into issues when attenpting to use IndexedDB and Service workers relating to browser storage
-- need to reduce api calls on client side and store results on client side 
-(attempted guidance from chatGPT and I caused further breaks...)
-- Designing, I have left for after the logic has been corrected
-- stored API key .env testing logic before design and deployment
+- [Description](#description)
+- [Features](#features) 
+- [Output](#output) 
+- [Installation](#installation) 
+- [Usage](#usage)
+- [License](#license) 
+- [Author Notes](#author-notes)
 
+## Description
 
-# React + TypeScript + Vite
+The weather app gets weather data from the WeatherStack API and displays current weather for a specific location.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Technologies
 
-Currently, two official plugins are available:
+- Visual Studio Code
+- Vite
+- React Typescript
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- Display current weather for location.
+- Responsive design for mobile and desktop screens.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Output
 
-- Configure the top-level `parserOptions` property like this:
+<img src="public/images/screenshot1.png" alt="Weather App Screenshot 1" width="150"/>
+<img src="public/images/screenshot2.png" alt="Weather App Screenshot 1" width="150"/>
+<img src="public/images/screenshot3.png" alt="Weather App Screenshot 1" width="150"/>
+<img src="public/images/screenshot4.png" alt="Weather App Screenshot 1" width="150"/>
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+[Back to Top](#vants-weather-app)
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Installation
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+1. **Clone the repository and navigate to the Project Directory**:
+   ```bash
+   git clone https://github.com/yourusername/weather-app.git
+   cd weather-app
+   ```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+2. **Install dependencies**:
+    ```bash
+    npm install
+    ```
+
+3. **Create .env file in the root directory and add your WeatherStack API Key**:
+    ```env
+    VITE_WEATHERSTACK_API_KEY= 
+    ```
+    *Paste your API without a semi-colon*
+
+4. **Run the app**:
+    ```bash
+    npm run dev
+    ```
+[Back to Top](#vants-weather-app)
+
+## Usage
+
+- Navigate to your browser and follow the link provided.
+- Enter a city name to view current weather conditions.
+
+### How to get your WeatherStack API Key
+
+- Head to the [WeatherStack API](https://weatherstack.com/signup/free) site and sign up for free.
