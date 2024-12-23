@@ -2,7 +2,6 @@ import { useState } from 'react';
 import CurrentWeather from './components/CurrentWeather';
 import SearchBar from './components/SearchBar';
 import useWeatherData from './hooks/useWeatherData'; 
-import OfflineNotifier from './components/offlineNotifier';
 import './styles/components/a11y.css';
 
 const App = () => {
@@ -19,9 +18,6 @@ const App = () => {
   return (
     <div className="app-container">
       <h1 className="offscreen">Responsive Weather App</h1>
-
-      {/* Show offline component */}
-      <OfflineNotifier />
 
       {/* Pass handleSearch function and loading state to SearchBar */}
       <SearchBar onSearch={handleSearch} loading={loading} />
