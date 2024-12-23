@@ -2,13 +2,9 @@ import { WeatherData, WeatherStackAPIResponse } from '../types/weather';
 
 const API_KEY = import.meta.env.VITE_WEATHERSTACK_API_KEY;
 const BASE_URL = 'https://api.weatherstack.com/current';
-const MOCK_DATA_URL = '/mockWeatherData.json';
 
 const fetchWeatherData = async (query: string): Promise<WeatherStackAPIResponse | null> => {
-  // Force using mock data URL for development
-  const useMockData = true; // Set this to true to use mock data
-
-  if (!API_KEY && !useMockData) {
+  if (!API_KEY) {
     throw new Error('API access key not found.');
   } 
 
@@ -20,7 +16,7 @@ const fetchWeatherData = async (query: string): Promise<WeatherStackAPIResponse 
     throw new Error('Only letters and single spaces are allowed.');
   }
 
-  const url = useMockData ? MOCK_DATA_URL : `${BASE_URL}?access_key=${API_KEY}&query=${query}`;
+  const url = `${BASE_URL}?access_key=${API_KEY}&query=${query}`;
   
   try {
     const response = await fetch(url);
