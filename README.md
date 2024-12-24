@@ -8,17 +8,19 @@
 - [Installation](#installation) 
 - [Usage](#usage)
 - [License](#license) 
-- [Author Notes](#author-notes)
 
 ## Description
 
 The weather app gets weather data from the WeatherStack API and displays current weather for a specific location.
 
-### Technologies
+### Technologies & References
 
 - Visual Studio Code
 - Vite
 - React Typescript
+- Service Worker 
+- WeatherStack API
+- CSS and TailwindCss
 
 ## Features
 
@@ -67,3 +69,7 @@ The weather app gets weather data from the WeatherStack API and displays current
 ### How to get your WeatherStack API Key
 
 - Head to the [WeatherStack API](https://weatherstack.com/signup/free) site and sign up for free.
+
+## License
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
