@@ -47,14 +47,16 @@ const fetchWeatherData = async (query: string): Promise<WeatherStackAPIResponse 
     // Check if the city name in the response matches the query
     const normalizedQuery = query.toLowerCase().trim();
     const normalizedCityName = data.location.name.toLowerCase().trim();
-    
-    // Allow small variations of query entered by the user
-    if (!normalizedCityName.includes(normalizedQuery)) {
-      throw new Error(`😲 Whoops! ${query} doesn't match weather data. Please check your spelling or try a different city name 😁`);
+    const normalizedCountryName = data.location.country.toLowerCase().trim();
+
+    // Allow small variations of query entered by the user or if country entered for better UX
+
+    if (normalizedCountryName.includes(normalizedQuery) || normalizedCityName.includes(normalizedQuery)) {
+      return data;
     }
-
-    return data;  
-
+  
+    throw new Error(`😲 Whoops! There is no data for your search, "${query}". Please check your spelling or try a different city name 😁`);
+    
   } catch (error) {
     if (error instanceof TypeError) {
       throw new Error('Unable to fetch data. Please check your connection.');
