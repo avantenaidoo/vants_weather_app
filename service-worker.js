@@ -2,7 +2,6 @@ const cachesName = 'weather-app-cache-v1';
 const urlsToCache = [
   '/vants_weather_app/',             
   '/vants_weather_app/index.html',   
-  '/vants_weather_app/assets/index.css',
   '/vants_weather_app/images/favicon.jpeg',
   '/vants_weather_app/images/clouds.png',  
   // Add other assets if needed
