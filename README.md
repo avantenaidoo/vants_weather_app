@@ -40,7 +40,7 @@ The weather app gets weather data from the WeatherStack API and displays current
 
 1. **Clone the repository and navigate to the Project Directory**:
    ```bash
-   git clone https://github.com/yourusername/weather-app.git
+   git clone https://github.com/yourusername/vants_weather_app.git
    cd weather-app
    ```
 
@@ -51,7 +51,7 @@ The weather app gets weather data from the WeatherStack API and displays current
 
 3. **Create .env file in the root directory and add your WeatherStack API Key**:
     ```env
-    VITE_WEATHERSTACK_API_KEY= 
+    VITE_WEATHERSTACK_API_KEY=0123456789
     ```
     *Paste your API without a semi-colon*
 
