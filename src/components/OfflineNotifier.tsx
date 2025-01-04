@@ -7,10 +7,23 @@ const OfflineNotifier = () => {
   const [offlineTime, setOfflineTime] = useState<string | ''>('');
 
   useEffect(() => {
-    const handleOnline = () => setIsOnline(true);
+    const handleOnline = () => {
+      setIsOnline(true);
+      localStorage.removeItem('offlineTime');
+    };
+
     const handleOffline = () => {
       setIsOnline(false);
-      setOfflineTime(new Date().toISOString());
+      const time = new Date().toISOString();
+      setOfflineTime(time);
+      localStorage.setItem('offlineTime', time);
+    };
+
+    if(!navigator.onLine && !offlineTime) {
+      const storefOfflineTime = localStorage.getItem('offlineTime');
+      if(storefOfflineTime) {
+        setOfflineTime(storefOfflineTime);
+      }
     }
 
     window.addEventListener('online', handleOnline);
@@ -20,10 +33,10 @@ const OfflineNotifier = () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
-  }, []);
+  }, [offlineTime]);
 
   return (
-    !isOnline && (
+    !isOnline && offlineTime && (
       <div className="offline-notifier">
         <p>You have been offline since {formatDate(offlineTime)}, live updates may not be available.</p>
       </div>
