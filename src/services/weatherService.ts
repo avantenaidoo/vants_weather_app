@@ -16,7 +16,7 @@
       throw new Error('Only letters and single spaces are allowed.');
     }
 
-    const url = `${BASE_URL}?access_key=${API_KEY}&query=${query}`;
+    const url = `${BASE_URL}?access_key=${API_KEY}&query=${query}`; 
     
     try {
       const response = await fetch(url);
@@ -51,7 +51,9 @@
 
       // Allow small variations of query entered by the user or if country entered for better UX
 
-      if (normalizedCountryName.includes(normalizedQuery) || normalizedCityName.includes(normalizedQuery)) {
+      if (normalizedCountryName === normalizedQuery || normalizedCityName === normalizedQuery) {
+        return data;
+      } else if (normalizedCityName.includes(normalizedQuery) || normalizedCountryName.includes(normalizedQuery)) {
         return data;
       }
     

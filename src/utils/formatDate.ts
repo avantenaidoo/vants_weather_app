@@ -11,6 +11,7 @@ export const formatDate = (localtime: string): string => {
     return date.toLocaleDateString('en-US', {
       weekday: 'short',  
       day: 'numeric',    
-      month: 'short',    
+      month: 'short',  
+      year: 'numeric',  
     }) + ', ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };

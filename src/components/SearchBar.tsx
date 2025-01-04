@@ -41,7 +41,7 @@ const SearchBar = ({ onSearch, loading }: SearchBarProps) => {
 
 
   return (
-    <form onSubmit={handleSubmit} role="search" className="search-form relative flex items-center">
+    <form onSubmit={handleSubmit} role="search" className="search-form relative items-center">
       <label className="offscreen" htmlFor="search">Enter a city name:</label>
 
       <input
@@ -63,7 +63,7 @@ const SearchBar = ({ onSearch, loading }: SearchBarProps) => {
       </button>
 
       {error && (
-        <div className="display-alert text-bol absolute left-6 transform -translate-y-[calc(3rem+2rem)] text-lg text-nowrap ml-1" role="alert" aria-live="assertive">
+        <div className="display-alert text-bold absolute left-6 transform -translate-y-[calc(3rem-2rem)] text-lg text-nowrap ml-1" role="alert" aria-live="assertive">
           {error}
         </div>
       )}

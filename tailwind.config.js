@@ -1,7 +1,8 @@
-import { transform } from 'typescript';
+// import { transform } from 'typescript';
 
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'selector', 
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",

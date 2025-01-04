@@ -15,19 +15,18 @@
     padding: 0.5rem 0;
 }
 
-.daily-tiles > svg {
+.btn-tile > img {
     position: relative;
     display: inline-block;
     width: 40px; 
     height: 40px; 
     padding: 7px; 
-    color: slateblue ;
     background-color: #e5e7eb; 
     border-radius: 25%; 
     box-sizing: border-box; 
     transition: background-color 0.3s ease; 
   }
   
-  .daily-tiles > svg:hover {
+  .btn-tile > img:hover {
     background-color: #d1d5db; 
   }
