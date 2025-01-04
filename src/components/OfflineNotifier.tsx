@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react';
 import '../styles/components/offlineNotifier.css';
+import { formatDate } from '../utils/formatDate';
 
 const OfflineNotifier = () => {
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
+  const [offlineTime, setOfflineTime] = useState<string | ''>('');
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
+    const handleOffline = () => {
+      setIsOnline(false);
+      setOfflineTime(new Date().toISOString());
+    }
 
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
@@ -20,7 +25,7 @@ const OfflineNotifier = () => {
   return (
     !isOnline && (
       <div className="offline-notifier">
-        <p>You are offline, live updates may not be available.</p>
+        <p>You have been offline since {formatDate(offlineTime)}, live updates may not be available.</p>
       </div>
     )
   );

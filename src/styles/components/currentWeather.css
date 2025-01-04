@@ -5,8 +5,13 @@
   min-height: 100px;
   max-height: 100%;
   margin: 0 auto 0.5rem auto;
-  transition: all 0.5s ease-in-out;
   color: rgb(21, 26, 26);
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.current-display.visible {
+  opacity: 1;
 }
 
 .temp-result {
@@ -28,4 +33,10 @@
   max-height: 80px;
   border: none;
   border-radius: 100%;
+}
+
+.display-error {
+  margin-top: 0.5rem;
+  border-radius: 6px;
+  width: 270px;
 }

@@ -1,3 +1,4 @@
+// WeatherStack API response and types
 export interface WeatherData {
   request: Request;
   location: Location;
@@ -48,4 +49,57 @@ export interface WeatherStackAPIResponse {
   current: Current;
   success: boolean;
   error: {code: number, info: string};
+}
+
+// Visual Crossing API response and types
+export interface VisualCrossingApiResponse {
+  queryCost:         number;
+  latitude:          number;
+  longitude:         number;
+  resolvedAddress:   string;
+  address:           string;
+  timezone:          string;
+  tzoffset:          number;
+  days:              Days[];
+  stations?:          { [key: string]: Station };
+  currentConditions: CurrentConditions;
+}
+
+export interface Days {
+  datetime:       string;
+  datetimeEpoch:  number;
+  temp:           number;
+  feelslike:      number;
+  humidity:       number;
+  dew:            number;
+  precip:         number;
+  precipprob:     number;
+  snow:           number;
+  snowdepth:      number;
+  preciptype:     string[] | null;
+  windgust:       number;
+  windspeed:      number;
+  winddir:        number;
+  pressure:       number;
+  visibility:     number;
+  cloudcover:     number;
+  solarradiation: number;
+  solarenergy:    number;
+  uvindex:        number;
+  conditions:     string;
+  icon:           string;
+  stations:       string[] | null;
+  source:         string;
+  sunrise:        string;
+  sunriseEpoch:   number;
+  sunset:         string;
+  sunsetEpoch:    number;
+  moonphase:      number;
+  tempmax?:       number;
+  tempmin?:       number;
+  feelslikemax?:  number;
+  feelslikemin?:  number;
+  precipcover?:   number;
+  severerisk?:    number;
+  description?:   string;
 }
