@@ -46,7 +46,11 @@ const App = () => {
   };
 
   return (
-    <div className="app-container">
+    <div className="app-container 
+    md:p-8 md:text-lg md:shadow-md
+    lg:p-10 lg:text-xl lg:shadow-lg lg:bg-contain
+    xl:p-12 xl:text-2xl xl:shadow-xl xl:bg-auto
+    ">
       <h1 className="offscreen">Responsive Weather App</h1>
 
       {/* Show theme toggle */}
