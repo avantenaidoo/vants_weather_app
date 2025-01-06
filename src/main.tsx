@@ -9,28 +9,10 @@ createRoot(document.getElementById('root')!).render(
   </StrictMode>,
 );
 
-// register service worker
-
-// if ('serviceWorker' in navigator) {
-//   window.addEventListener('load', () => {
-//     navigator.serviceWorker.register('../service-worker.js').then((registration) => {
-//       console.log('Service Worker registered with scope:', registration.scope);
-//     }).catch((error) => {
-//       console.error('Service Worker registration failed:', error);
-//     });
-//   });
-// }
-
-// if ('serviceWorker' in navigator) {
-//   window.addEventListener('load', () => {
-//     navigator.serviceWorker.register('/vants_weather_app/service-worker.js');
-//   });
-// }
-
-
+// Custom service worker registration
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/vants_weather_app/service-worker.js') // ensure the path is correct
+    navigator.serviceWorker.register('/vants_weather_app/service-worker.js') 
       .then((registration) => {
         console.log('Service Worker registered with scope:', registration.scope);
       })
