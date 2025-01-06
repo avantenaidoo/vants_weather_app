@@ -18,8 +18,8 @@ const TileDisplay = ({ tile, showTile, onClose }: TileDisplayProps) => {
     const weatherIcon = `https://github.com/visualcrossing/WeatherIcons/raw/refs/heads/main/SVG/2nd%20Set%20-%20Color/${icon}.svg`;
 
   return (
-    <div className={`tile-display bg-cyan-900 p-3 rounded-t-xl shadow-lg text-xl font-light ${showTile ? 'visible' : ''}`} >
-        <button className='close-tile' onClick={onClose} aria-label='Close display'>
+    <div className={`tile-display bg-cyan-900 p-3 rounded-t-xl shadow-lg text-xl font-light overflow-y-auto ${showTile ? 'visible' : ''}`} >
+        <button className='close-tile sticky top-0 z-10' onClick={onClose} aria-label='Close display'>
             x
         </button>
         <h2 className='my-4'>{ formattedDate }</h2>
