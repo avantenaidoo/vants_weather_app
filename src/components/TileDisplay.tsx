@@ -19,13 +19,13 @@ const TileDisplay = ({ tile, showTile, onClose }: TileDisplayProps) => {
 
   return (
     <div className={`tile-display bg-cyan-900 p-3 rounded-t-xl shadow-lg text-xl font-light overflow-y-auto ${showTile ? 'visible' : ''}`} >
-        <button className='close-tile sticky top-0 z-10' onClick={onClose} aria-label='Close display'>
+        <button className='close-tile' onClick={onClose} aria-label='Close display'>
             x
         </button>
         <h2 className='my-4'>{ formattedDate }</h2>
-        <img src={weatherIcon} alt={icon} className='mb-5'/>
+        <img src={weatherIcon} alt={icon} />
         <p className='text-3xl mb-4'>{ temp }°C</p>
-        <p className="font-semibold mb-4">{ description }</p>
+        <p className="font-semibold mb-4 w-auto max-w-[calc(100%-40px)]" style={{ width: '285px' }}>{ description }</p>
         <p>Wind: { windspeed } km/h</p>
         <p>Precipitation: { precip } mm</p>
         <p>Pressure: { pressure } mb</p>
