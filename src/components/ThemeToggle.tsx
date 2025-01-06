@@ -30,7 +30,7 @@ const ThemeToggle = () => {
   };
 
   return (
-    <button className='toggle-btn mt-2' onClick={toggleTheme}>
+    <button className='toggle-btn md:scale-150 md:mb-2' onClick={toggleTheme}>
       {isDarkMode ? <MdSunny size={20} /> : <BsFillMoonStarsFill size={20}/>}
     </button> 
   );
