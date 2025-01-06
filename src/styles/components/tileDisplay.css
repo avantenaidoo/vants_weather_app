@@ -36,4 +36,5 @@ html.dark .tile-display {
 
 .tile-display > img {
   width: 150px;
+  margin: 0 auto;
 }
