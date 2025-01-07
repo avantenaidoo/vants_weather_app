@@ -13,21 +13,24 @@
 ## Description
 
 This weather app gets weather data from the WeatherStack API and displays current weather for a specific location.
+A frontend static site is built with Vite, React Typescript, CSS and TailwindCss.
 
 ### Technologies & References
 
-- Visual Studio Code
-- Vite
-- React Typescript
-- Service Worker
-- WeatherStack API
-- CSS and TailwindCss
+- Vite, React Typescript, CSS, TailwindCSS
+- Service Worker for caching data
+- WeatherStack API for current weather data
+- Visual Crossing API for historical and forecast data
+
 
 ## Features
 
-- Displays current weather for location.
+- Displays Current, History and Forecast weather for location entered.
 - Responsive design for mobile and desktop screens.
 - Caches data for use offline - Stale While Revalidate caching 
+- System preference for dark/light mode & Toggle button
+- Search Form - if user enters a country name, it will display a city in that country.
+- Offline Notifier - if user is offline, it will display a message.
 
 ## Output
 
@@ -36,6 +39,8 @@ This weather app gets weather data from the WeatherStack API and displays curren
 <img src="public/images/screenshot2.png" alt="Weather App Screenshot 1" width="150"/>
 <img src="public/images/screenshot3.png" alt="Weather App Screenshot 1" width="150"/>
 <img src="public/images/screenshot4.png" alt="Weather App Screenshot 1" width="150"/>
+<img src="public/images/screenshot5.png" alt="Weather App Screenshot 1" width="150"/>
+<img src="public/images/screenshot6.png" alt="Weather App Screenshot 1" width="150"/>
 </p>
 
 [Live Demo](https://avantenaidoo.github.io/vants_weather_app/)
@@ -58,9 +63,10 @@ This weather app gets weather data from the WeatherStack API and displays curren
 
 3. **Create .env file in the root directory and add your WeatherStack API Key**:
     ```env
-    VITE_WEATHERSTACK_API_KEY=0123456789
+    VITE_WEATHERSTACK_API_KEY=<your-api-key>
+    VITE_VISUALCROSSING_API_KEY=<your-api-key>
     ```
-    *Paste your API without a semi-colon*
+    *Replace "your-api-key" with your API key*
 
 4. **Run the app**:
     ```bash
@@ -70,20 +76,22 @@ This weather app gets weather data from the WeatherStack API and displays curren
 
 ## Usage
 
-- Navigate to your browser and follow the link provided.
+- Navigate to your browser and follow the link provided at Installation step 4.
 - Enter a city name to view current weather conditions.
 
-### How to get your WeatherStack API Key
+### How to get your WeatherStack & Visual Crossing API Keys
+*Free tier is available for both APIs*
 
-- Head to the [WeatherStack API](https://weatherstack.com/signup/free) site and sign up for free.
+- Head to the [WeatherStack API](https://weatherstack.com/signup/free) site and sign up.
+- Head to the [Visual Crossing API](https://www.visualcrossing.com/weather-api) site and sign up.
 
 ## Author Notes
 
 - Live Demo may not have renewed or valid API Key 
-- Light/Dark mode auto adjusts based on device settings
 - Background Image created in Adobe Express. 
-- Design and color/colours - inspiration from Tamz & Rob 🕊️. Favicon is personal brand from scuba diving...
-- App is still being improved from time to time. It does need more improvements, please feel free to contribute and/share insights
+- Design and color/colours - inspiration from Tamz & Rob 🕊️. Favicon is personal design from scuba diving ...
+- App is still being improved from time to time, please feel free to contribute and/share insights.
+- some files are not being used, but kept for reference.
 
 [Back to Top](#vants-weather-app)
 
