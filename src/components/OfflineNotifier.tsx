@@ -38,7 +38,7 @@ const OfflineNotifier = () => {
   return (
     !isOnline && offlineTime && (
       <div className="offline-notifier">
-        <p>You have been offline since {formatDate(offlineTime)}, live updates may not be available.</p>
+        <p>You're currently offline since {formatDate(offlineTime)}, live updates may not be available.</p>
       </div>
     )
   );
