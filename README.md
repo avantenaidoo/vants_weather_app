@@ -91,6 +91,7 @@ A frontend static site is built with Vite, React Typescript, CSS and TailwindCss
 - Background Image created in Adobe Express. 
 - Design and color/colours - inspiration from Tamz & Rob 🕊️. Favicon is personal design from scuba diving ...
 - App is still being improved from time to time, please feel free to contribute and/share insights.
+- some files are not being used, but kept for reference.
 
 [Back to Top](#vants-weather-app)
 
