@@ -38,6 +38,8 @@ A frontend static site is built with Vite, React Typescript, CSS and TailwindCss
 <img src="public/images/screenshot1.png" alt="Weather App Screenshot 1" width="150"/>
 <img src="public/images/screenshot2.png" alt="Weather App Screenshot 1" width="150"/>
 <img src="public/images/screenshot3.png" alt="Weather App Screenshot 1" width="150"/>
+</P>
+<p>
 <img src="public/images/screenshot4.png" alt="Weather App Screenshot 1" width="150"/>
 <img src="public/images/screenshot5.png" alt="Weather App Screenshot 1" width="150"/>
 <img src="public/images/screenshot6.png" alt="Weather App Screenshot 1" width="150"/>
