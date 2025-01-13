@@ -63,12 +63,12 @@ A frontend static site is built with Vite, React Typescript, CSS and TailwindCss
     npm install
     ```
 
-3. **Create .env file in the root directory and add your WeatherStack API Key**:
+3. **Create .env file in the root directory and add your own weather API Keys**:
     ```env
     VITE_WEATHERSTACK_API_KEY=<your-api-key>
     VITE_VISUALCROSSING_API_KEY=<your-api-key>
     ```
-    *Replace "your-api-key" with your API key*
+    *Replace "your-api-key" with your respective API key*
 
 4. **Run the app**:
     ```bash
@@ -79,7 +79,7 @@ A frontend static site is built with Vite, React Typescript, CSS and TailwindCss
 ## Usage
 
 - Navigate to your browser and follow the link provided at Installation step 4.
-- Enter a city name to view current weather conditions.
+- Enter a city name to view current & history/forecast weather conditions.
 
 ### How to get your WeatherStack & Visual Crossing API Keys
 *Free tier is available for both APIs*
