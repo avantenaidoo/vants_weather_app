@@ -32,6 +32,7 @@ dist-ssr
 /backend/server/*.log
 /backend/server/.env
 /backend/server/tsconfig.tsbuildinfo
+/backend/server/src/templates.ts
 
 # Test coverage or reports 
 *.pid
