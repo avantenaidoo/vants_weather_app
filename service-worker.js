@@ -1,5 +1,6 @@
 // Note: This is a basic service worker script that caches assets for offline use 
 // Update public folder for the complete service worker script to work in deployment and dev mode
+// Not to be used with the backend server
 
 const cachesName = 'weather-app-cache-v1';
 const urlsToCache = [
