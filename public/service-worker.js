@@ -1,94 +1,96 @@
 const cachesName = 'weather-app-cache-v1';
+const CACHE_MAX_AGE = 60 * 60 * 1000;
+
 const urlsToCache = [
-  '/vants_weather_app/',             
-  '/vants_weather_app/index.html',   
+  '/vants_weather_app/',
+  '/vants_weather_app/index.html',
   '/vants_weather_app/images/favicon.jpeg',
-  '/vants_weather_app/images/clouds.png',  
-  // Add other assets if needed
+  '/vants_weather_app/images/clouds.png',
 ];
 
 // Install the service worker and cache assets
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(cachesName).then((cache) => {
-      return cache.addAll(urlsToCache); // Pre-cache assets for offline use
-    })
-  );
+self.addEventListener('install', async (event) => {
+  const cache = await caches.open(cachesName);
+  await cache.addAll(urlsToCache); // Cache assets during install
 });
 
 // Activate the service worker and remove old caches
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', async (event) => {
   const cacheWhitelist = [cachesName];
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (!cacheWhitelist.includes(cacheName)) {
-            return caches.delete(cacheName); // Clean up old caches
-          }
-        })
-      );
+  const cacheNames = await caches.keys();
+  await Promise.all(
+    cacheNames.map(async (cacheName) => {
+      if (!cacheWhitelist.includes(cacheName)) {
+        await caches.delete(cacheName); // Delete old caches
+      }
     })
   );
 });
 
-// Fetch assets from the cache or network (with stale-while-revalidate)
+// Fetch event: check if URLs are in cache and fetch if missing
+self.addEventListener('fetch', async (event) => {
+  const url = new URL(event.request.url);
 
-// Helper function to handle caching logic
-function handleCaching(event, urlWithoutAPIKey) {
-  return caches.match(urlWithoutAPIKey).then((cachedResponse) => {
-    const networkFetch = fetch(event.request).then((response) => {
-      const responseClone = response.clone(); // Clone the response before caching
+  event.respondWith(
+    caches.match(event.request).then(async (cacheResponse) => {
+      // If a cached response exists, serve it immediately
+      if (cacheResponse) {
+        // If offline, serve cached data (regardless of age)
+        if (!navigator.onLine) {
+          return cacheResponse; // Serve stale cache if offline
+        }
 
-      // Cache the new response (without API key) if it's valid
-      if (response.ok) {
-        caches.open(cachesName).then((cache) => {
-          cache.put(urlWithoutAPIKey, responseClone); // Cache the response without the API key
-        });
+        // If online, check cache freshness
+        const cachedTimestamp = cacheResponse.headers.get('date');
+        if (cachedTimestamp) {
+          const cacheAge = Date.now() - new Date(cachedTimestamp).getTime();
+          if (cacheAge < CACHE_MAX_AGE) {
+            return cacheResponse; // Serve fresh cache
+          } else {
+            // If cache is stale, delete and fetch fresh data
+            await caches.open(cachesName).then((cache) => {
+              cache.delete(event.request); // Delete stale cache
+              fetchAndCache(event.request); // Fetch and cache fresh data in background
+            });
+          }
+        }
       }
 
-      return response; // Return the network response to the client
-    });
+      // If no cache found, fetch from the network
+      return fetchAndCache(event.request);
+    })
+  );
+});
 
-    // Return cached response immediately (stale) and revalidate in the background
-    return cachedResponse || networkFetch; // If no cached data, fetch from network
-  }).catch(() => {
-    return caches.match(event.request); // If both network and cache fail, show a fallback message
-  });
+// Function to fetch and cache a request
+async function fetchAndCache(request) {
+  try {
+    const fetchResponse = await fetch(request);
+    const cache = await caches.open(cachesName);
+    const fetchResponseClone = fetchResponse.clone();
+    await cache.put(request, fetchResponseClone); // Cache the fresh response
+    // After this, check for missing assets and cache them in background
+    checkAndCacheAssets();
+    return fetchResponse; // Return fresh network data
+  } catch {
+    return new Response('Network request failed', { status: 502 });
+  }
 }
 
-// Listen for the fetch event
-self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
-  
-  if (event.request.url.includes('api.weatherstack.com')) {
-    // Strip the API key for weatherstack.com and create the URL without the key
-    url.searchParams.delete('access_key'); // Safely delete the API key parameter
-    let urlWithoutAPIKey = url.toString().toLowerCase(); // Build the URL without API key
-
-    event.respondWith(handleCaching(event, urlWithoutAPIKey)); // Use the helper function
-
-  } else if (event.request.url.includes('weather.visualcrossing.com')) {
-    // Strip the API key for visualcrossing.com and create the URL without the key
-    url.searchParams.delete('key'); // Safely delete the API key parameter
-    let urlWithoutAPIKey = url.toString().toLowerCase(); // Build the URL without API key
-
-    event.respondWith(handleCaching(event, urlWithoutAPIKey)); // Use the helper function
-
-  } else {
-    // Handle non-API requests (images, CSS, HTML, etc.)
-    event.respondWith(
-      caches.match(event.request).then((cachedResponse) => {
-        // Return cached response if available or fetch from network
-        return cachedResponse || fetch(event.request).then((response) => {
-          return caches.open(cachesName).then((cache) => {
-            cache.put(event.request, response.clone()); // Cache new response
-            return response;
-          });
-        }).catch(() => {
-          return caches.match(event.request); // If offline, return cached version
-        });
-      })
-    );
+// Check and cache missing assets from urlsToCache (background caching)
+async function checkAndCacheAssets() {
+  const cache = await caches.open(cachesName);
+  for (const url of urlsToCache) {
+    const cachedAsset = await cache.match(url);
+    if (!cachedAsset) {
+      try {
+        const response = await fetch(url);
+        if (response.ok) {
+          await cache.put(url, response.clone()); // Cache the missing asset
+        }
+      } catch (err) {
+        console.error(`Failed to fetch and cache ${url}:`, err);
+      }
+    }
   }
-});
+}
