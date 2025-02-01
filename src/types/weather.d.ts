@@ -53,7 +53,7 @@ export interface WeatherStackAPIResponse {
 
 // Visual Crossing API response and types
 export interface VisualCrossingApiResponse {
-  queryCost:         number;
+  queryCost?:         number;
   latitude:          number;
   longitude:         number;
   resolvedAddress:   string;
