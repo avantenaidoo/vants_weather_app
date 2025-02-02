@@ -41,7 +41,10 @@ const App = () => {
 
   const handleTileClick = (day: Days) => {
     setTile(day);
-    setShowTile(true);
+
+    setTimeout(() => {
+      setShowTile(true);
+    }, 50);
   };
 
   const handleCloseTile = () => {
