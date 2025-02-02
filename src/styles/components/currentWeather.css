@@ -33,6 +33,11 @@
   max-height: 80px;
   border: none;
   border-radius: 100%;
+
+}
+
+.weather-icon[src$=".svg"] {
+  border-radius: 0;  /* Removes border-radius for SVG */
 }
 
 .display-error {
