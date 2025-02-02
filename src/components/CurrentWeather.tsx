@@ -1,18 +1,32 @@
-import { WeatherData } from '../types/weather';
+import { useState, useEffect } from 'react';
+import { VisualCrossingApiResponse, WeatherData } from '../types/weather';
 import { formatDate } from '../utils/formatDate';
 import '../styles/components/currentWeather.css';
 
 type CurrentWeatherProps = {
-  weatherData: WeatherData | null;
+  currentWeather: WeatherData | VisualCrossingApiResponse | null;
   error: Error | null;
 };
 
-const CurrentWeather = ({ weatherData, error }: CurrentWeatherProps) => {
+const CurrentWeather = ({ currentWeather, error }: CurrentWeatherProps) => {
 
-  // const displayMessage = error?.message;
+  console.log('CurrentWeather.tsx file: currentWeather data:', currentWeather);
+  
+  const [showError, setShowError] = useState<boolean>(false);
+  
+  useEffect(() => {
+    if (error) {
+      setShowError(true);
 
+      const timer = setTimeout(() => {
+        setShowError(false);
+      }, 3000)
 
-  if (error) {
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
+  if (showError && error) {
     return (
       <div className="display-error bg-slate-50 bg-opacity-25 font-bold text-sm italic text-gray-950 text-center" role="alert" aria-labelledby="CurrentWeatherError">
         <p id="CurrentWeatherError">Error: {error.message}</p>
@@ -20,16 +34,60 @@ const CurrentWeather = ({ weatherData, error }: CurrentWeatherProps) => {
     );
   }
 
-  if (!weatherData) return null;
+  if (!currentWeather) return null;
+
+  let name, country, weatherIcon, weatherDescription, temperature, wind_speed, precip, pressure, humidity, feelslike, displayDate;
 
 
-  const { location, current } = weatherData;
-  const weatherIcon = current?.weather_icons?.[0];
-  const weatherDescription = current?.weather_descriptions?.[0];
-  const { name, country, localtime } = location || {}; 
-  const { temperature, wind_speed, precip, pressure, humidity, feelslike } = current || {}; 
+  if (currentWeather && 'currentConditions' in currentWeather) {
+      
+    const { currentConditions, address, resolvedAddress } = currentWeather; 
+  
+    name = address;  
+    country = resolvedAddress.split(',').pop()?.trim(); 
+    
+    weatherIcon = `https://github.com/visualcrossing/WeatherIcons/raw/refs/heads/main/SVG/2nd%20Set%20-%20Color/${currentConditions.icon}.svg`;
+    weatherDescription = currentConditions.conditions;
+    temperature = currentConditions.temp;
+    wind_speed = currentConditions.windspeed;
+    precip = currentConditions.precip;
+    pressure = currentConditions.pressure;
+    humidity = currentConditions.humidity;
+    feelslike = currentConditions.feelslike;
+  
+    const localtime = currentConditions.datetime.split(":").slice(0, 2).join(":");
+    displayDate = `Today, ${localtime}`;
+  }
+      
+  if (currentWeather && 'location' in currentWeather) {
 
-  const displayDate = formatDate(localtime);
+    const { location, current } = currentWeather;
+    
+    weatherIcon = current?.weather_icons?.[0];
+    weatherDescription = current?.weather_descriptions?.[0];
+    name = location?.name; 
+    country = location?.country; 
+    temperature = current?.temperature;
+    wind_speed = current?.wind_speed;
+    precip = current?.precip;
+    pressure = current?.pressure;
+    humidity = current?.humidity;
+    feelslike = current?.feelslike;
+    displayDate = formatDate(location?.localtime);
+  }
+  
+
+  // const { location, current } = weatherData;
+  // const weatherIcon = current?.weather_icons?.[0];
+  // const weatherDescription = current?.weather_descriptions?.[0];
+  // const { name, country, localtime } = location || {}; 
+  // const { temperature, wind_speed, precip, pressure, humidity, feelslike } = current || {}; 
+
+  // const displayDate = formatDate(localtime);
+
+  console.log('CurrentWeather.tsx file: currentWeather data before rendering:', currentWeather);
+  console.log('CurrentWeather.tsx file: weatherData before rendering:', currentWeather);
+
 
   return (
     <div className={`current-display visible bg-slate-50 bg-opacity-25 p-3 rounded-xl shadow-lg max-w-lg mx-auto mb-3`} role="region" aria-labelledby="CurrentWeather">
