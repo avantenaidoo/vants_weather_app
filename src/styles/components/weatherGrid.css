@@ -4,6 +4,12 @@
     overflow: hidden;
     font-size: 1.1rem;
     text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.grid-container.visible {
+    opacity: 1;
 }
 
 .daily-tiles {
