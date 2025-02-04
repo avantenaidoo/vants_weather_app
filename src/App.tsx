@@ -66,12 +66,6 @@ const App = () => {
     }
   }, [error]);  
 
-  console.log('Delay render set to true');
-
-  console.log('App.tsx currentWeather being passed to CurrentWeather:', currentWeather);
-  console.log('App.tsx weatherDays being passed to WeatherGrid:', weatherDays);
-
-
   return (
     <div className="app-container 
     md:p-8 md:text-lg md:shadow-md

@@ -10,8 +10,6 @@ type CurrentWeatherProps = {
 
 const CurrentWeather = ({ currentWeather, error }: CurrentWeatherProps) => {
 
-  console.log('CurrentWeather.tsx file: currentWeather data:', currentWeather);
-
   const [delayRender, setDelayRender] = useState<boolean>(false); 
   const [showError, setShowError] = useState<boolean>(false);
 
