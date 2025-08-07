@@ -1,94 +1,151 @@
-const cachesName = 'weather-app-cache-v1';
+const version = 2;
+const cachesName = `weather-app-cache-v${version}`;
+const CACHE_MAX_AGE = 60 * 60 * 1000; // 1 hour
+
 const urlsToCache = [
-  '/vants_weather_app/',             
-  '/vants_weather_app/index.html',   
-  '/vants_weather_app/images/favicon.jpeg',
-  '/vants_weather_app/images/clouds.png',  
-  // Add other assets if needed
+    '/vants_weather_app/',
+    '/vants_weather_app/index.html',
+    '/vants_weather_app/images/favicon.jpeg',
+    '/vants_weather_app/images/clouds.png',
+    '/vants_weather_app/images/site.webmanifest',
 ];
 
 // Install the service worker and cache assets
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(cachesName).then((cache) => {
-      return cache.addAll(urlsToCache); // Pre-cache assets for offline use
-    })
-  );
+    event.waitUntil(
+        (async () => {
+            try {
+                const cache = await caches.open(cachesName);
+                await cache.addAll(urlsToCache); // Cache assets during install
+                console.log('Service Worker: All assets cached successfully.');
+            } catch (error) {
+                console.error('Service Worker: Caching failed during install:', error);
+            }
+        })()
+    );
+    self.skipWaiting(); // Make sure to activate the new service worker immediately
 });
 
 // Activate the service worker and remove old caches
 self.addEventListener('activate', (event) => {
-  const cacheWhitelist = [cachesName];
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (!cacheWhitelist.includes(cacheName)) {
-            return caches.delete(cacheName); // Clean up old caches
-          }
-        })
-      );
-    })
-  );
+    event.waitUntil(
+        (async () => {
+            const cacheWhitelist = [cachesName];
+
+            try {
+                const cacheNames = await caches.keys();
+                const cachesToDelete = cacheNames.filter((cacheName) => !cacheWhitelist.includes(cacheName));
+                await Promise.all(cachesToDelete.map((cacheName) => caches.delete(cacheName))); // Delete old caches
+                console.log('Service Worker: Old caches cleaned up.');
+                await clients.claim(); // Allow new service worker to claim clients
+                console.log('Service Worker: Clients claimed by new service worker.');
+            } catch (error) {
+                console.error('Service Worker: Error during cache cleanup in activate event:', error);
+            }
+        })()
+    );
 });
 
-// Fetch assets from the cache or network (with stale-while-revalidate)
+// Fetch event: check if URLs are in cache and fetch if missing
+self.addEventListener('fetch', (event) => {
+    const url = new URL(event.request.url);
+    const isApiRequest = url.pathname.includes('/api/');
 
-// Helper function to handle caching logic
-function handleCaching(event, urlWithoutAPIKey) {
-  return caches.match(urlWithoutAPIKey).then((cachedResponse) => {
-    const networkFetch = fetch(event.request).then((response) => {
-      const responseClone = response.clone(); // Clone the response before caching
+    event.respondWith(
+        caches.match(event.request)
+            .then((cacheResponse) => {
+                console.log('Fetch intercepted:', event.request.url, 'API:', isApiRequest);
+                if (!navigator.onLine) {
+                    console.log('Offline, serving cache:', !!cacheResponse);
+                    return cacheResponse || new Response('Offline and resource not found in cache', { status: 404 });
+                }
 
-      // Cache the new response (without API key) if it's valid
-      if (response.ok) {
-        caches.open(cachesName).then((cache) => {
-          cache.put(urlWithoutAPIKey, responseClone); // Cache the response without the API key
-        });
-      }
+                if (isApiRequest) {
+                    console.log('API cache exists:', !!cacheResponse);
+                    if (cacheResponse) {
+                        const cachedTimestamp = cacheResponse.headers.get('date');
+                        console.log('API cache timestamp:', cachedTimestamp);
+                        if (cachedTimestamp) {
+                            const cacheAge = Date.now() - new Date(cachedTimestamp).getTime();
+                            console.log('API cache age:', cacheAge, 'vs', CACHE_MAX_AGE);
+                            if (cacheAge < CACHE_MAX_AGE) {
+                                console.log('Serving fresh API cache');
+                                return cacheResponse;
+                            }
+                            console.log('API cache stale, deleting and fetching');
+                            return caches.delete(event.request).then(() => {
+                                return fetchAndCache(event.request);
+                            });
+                        }
+                        console.log('API cache no timestamp, deleting and fetching');
+                        return caches.delete(event.request).then(() => {
+                            return fetchAndCache(event.request);
+                        });
+                    }
+                    console.log('No API cache, fetching');
+                    return fetchAndCache(event.request);
+                } else {
+                    console.log('Non-API cache exists:', !!cacheResponse);
+                    if (cacheResponse) {
+                        const cachedTimestamp = cacheResponse.headers.get('date');
+                        console.log('Non-API cache timestamp:', cachedTimestamp);
+                        if (cachedTimestamp) {
+                            const cacheAge = Date.now() - new Date(cachedTimestamp).getTime();
+                            console.log('Non-API cache age:', cacheAge, 'vs', CACHE_MAX_AGE);
+                            if (cacheAge < CACHE_MAX_AGE) {
+                                console.log('Serving fresh non-API cache');
+                                return cacheResponse;
+                            }
+                        }
+                        console.log('Non-API stale or no timestamp, fetching');
+                        return fetchAndCache(event.request);
+                    }
+                    console.log('No non-API cache, fetching');
+                    return fetchAndCache(event.request);
+                }
+            })
+            .catch((error) => {
+                console.log('Fetch error:', error);
+                return new Response('Error during fetch process', { status: 502 });
+            })
+    );
+});
 
-      return response; // Return the network response to the client
-    });
+// Function to fetch and cache a request
+async function fetchAndCache(request) {
+    try {
+        const fetchResponse = await fetch(request);
+        const cache = await caches.open(cachesName);
+        const fetchResponseClone = fetchResponse.clone();
+        await cache.put(request, fetchResponseClone); // Cache the fresh response
+        checkAndCacheAssets(); // Check and cache missing assets in the background
+        return fetchResponse; // Return fresh network data
+    } catch (err) {
+        const url = new URL(request.url);
+        const isApiRequest = url.pathname.startsWith('/api/');
+        if (isApiRequest) {
+            return new Response('Network request failed for /api/, try again', { status: 502 });
+        } else {
+            return new Response('Network request failed for assets', { status: 502 });
+        }
 
-    // Return cached response immediately (stale) and revalidate in the background
-    return cachedResponse || networkFetch; // If no cached data, fetch from network
-  }).catch(() => {
-    return caches.match(event.request); // If both network and cache fail, show a fallback message
-  });
+    }
 }
 
-// Listen for the fetch event
-self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
-  
-  if (event.request.url.includes('api.weatherstack.com')) {
-    // Strip the API key for weatherstack.com and create the URL without the key
-    url.searchParams.delete('access_key'); // Safely delete the API key parameter
-    let urlWithoutAPIKey = url.toString().toLowerCase(); // Build the URL without API key
-
-    event.respondWith(handleCaching(event, urlWithoutAPIKey)); // Use the helper function
-
-  } else if (event.request.url.includes('weather.visualcrossing.com')) {
-    // Strip the API key for visualcrossing.com and create the URL without the key
-    url.searchParams.delete('key'); // Safely delete the API key parameter
-    let urlWithoutAPIKey = url.toString().toLowerCase(); // Build the URL without API key
-
-    event.respondWith(handleCaching(event, urlWithoutAPIKey)); // Use the helper function
-
-  } else {
-    // Handle non-API requests (images, CSS, HTML, etc.)
-    event.respondWith(
-      caches.match(event.request).then((cachedResponse) => {
-        // Return cached response if available or fetch from network
-        return cachedResponse || fetch(event.request).then((response) => {
-          return caches.open(cachesName).then((cache) => {
-            cache.put(event.request, response.clone()); // Cache new response
-            return response;
-          });
-        }).catch(() => {
-          return caches.match(event.request); // If offline, return cached version
-        });
-      })
-    );
-  }
-});
+// Check and cache missing assets from urlsToCache (background caching)
+async function checkAndCacheAssets() {
+    const cache = await caches.open(cachesName);
+    for (const url of urlsToCache) {
+        const cachedAsset = await cache.match(url);
+        if (!cachedAsset) {
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    await cache.put(url, response.clone()); // Cache the missing asset
+                }
+            } catch (err) {
+                console.error(`Failed to fetch and cache ${url}:`, err);
+            }
+        }
+    }
+}
