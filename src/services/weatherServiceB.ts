@@ -1,4 +1,5 @@
 import { VisualCrossingApiResponse } from '../types/weather';
+import { checkCache } from '../utils/checkCache';
 
 //const API_KEY = import.meta.env.VITE_VISUALCROSSING_API_KEY;
 

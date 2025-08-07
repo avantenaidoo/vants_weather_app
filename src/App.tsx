@@ -22,7 +22,9 @@ const App = () => {
   const { weatherData, loading, error } = useWeatherData(city);
 
   // Extract city name from weatherData for Visual Crossing url endpoint
-  const cityName = error? city : weatherData?.location.name || '';
+  //const cityName = error? city : weatherData?.location.name || '';
+  const cityName = city === ''? '': error ? city : weatherData?.location.name || '';
+
 
   // Extract localtime from weatherData
   const localtime = error ? new Date().toISOString() : weatherData?.location.localtime || '';

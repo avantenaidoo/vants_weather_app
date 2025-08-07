@@ -11,13 +11,11 @@ createRoot(document.getElementById('root')!).render(
 
 // Custom service worker registration
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/vants_weather_app/service-worker.js') 
-      .then((registration) => {
-        console.log('Service Worker registered with scope:', registration.scope);
-      })
-      .catch((error) => {
-        console.error('Service Worker registration failed:', error);
-      });
-  });
+  navigator.serviceWorker.register('/vants_weather_app/service-worker.js')
+    .then((registration) => {
+      console.log('Service Worker registered with scope:', registration.scope);
+    })
+    .catch((error) => {
+      console.error('Service Worker registration failed:', error);
+    });
 }

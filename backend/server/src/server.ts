@@ -51,10 +51,10 @@ app.get("/", (request: Request, response: Response) => {
 // log errors
 app.all('*', logErrors);
 
-cron.schedule('0 0 1 * *', async () => {
-  //console.log('Starting log cleanup job...');
+cron.schedule('* * * * *', async () => {
+  console.log('Starting log cleanup job...');
   await cleanupAllLogs();
-  //console.log('Log cleanup job completed.');
+  console.log('Log cleanup job completed.');
 });
 
 app.listen(PORT, () => {
