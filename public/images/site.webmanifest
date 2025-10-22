@@ -1,7 +1,6 @@
 {
   "name": "Vants Weather App",
   "short_name": "Weather",
-  "start_url": "/vants-weather-app/",
   "icons": [
     {
       "src": "/images/web-app-manifest-192x192.png",
@@ -19,5 +18,5 @@
   "theme_color": "#ffffff",
   "background_color": "#f5f9fa",
   "display": "standalone",
-  "start_url": "/"
+  "start_url": "/vants_weather_app/"
 }
