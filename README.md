@@ -21,6 +21,7 @@ A frontend static site is built with Vite, React Typescript, CSS and TailwindCss
 - Service Worker for caching data
 - WeatherStack API for current weather data
 - Visual Crossing API for historical and forecast data
+- Node.js and Express backend deployed with Render
 
 
 ## Features
@@ -89,6 +90,7 @@ A frontend static site is built with Vite, React Typescript, CSS and TailwindCss
 
 ## Author Notes
 
+- Initial search is delayed(1-2mins) due to backend wake up time from Render. the server goes into rest mode when inactive.
 - Live Demo may not have renewed or valid API Key 
 - Background Image created in Adobe Express. 
 - Design and color/colours - inspiration from Tamz & Rob 🕊️. Favicon is personal design from scuba diving ...
