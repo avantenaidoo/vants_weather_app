@@ -17,21 +17,24 @@ A frontend static site is built with Vite, React Typescript, CSS and TailwindCss
 
 ### Technologies & References
 
-- Vite, React Typescript, CSS, TailwindCSS
+- Vite, React Typescript, CSS, TailwindCSS, Docker, Node.js, ExpressRouter
 - Service Worker for caching data
 - WeatherStack API for current weather data
 - Visual Crossing API for historical and forecast data
-- Node.js and Express backend deployed with Render
+- Node.js and Express backend deployed with Render and Dockerized
 
 
 ## Features
 
 - Displays Current, History and Forecast weather for location entered.
 - Responsive design for mobile and desktop screens.
-- Caches data for use offline - Stale While Revalidate caching 
+- Caches data for use offline - Stale While Revalidate caching included
 - System preference for dark/light mode & Toggle button
 - Search Form - if user enters a country name, it will display a city in that country.
+- Notifies users of invalid search entry, system offline, invalid/no API key, service provider error.
 - Offline Notifier - if user is offline, it will display a message.
+- Backend server with Docker through Render. Node.js and ExpressRouter for serverside rendering. 
+- Backend handles all api calls and routing. Leaving the Frontend as a complete SPA for deployment on GH-pages.
 
 ## Output
 
