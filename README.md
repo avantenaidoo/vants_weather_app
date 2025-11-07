@@ -13,11 +13,11 @@
 ## Description
 
 This weather app gets weather data from the WeatherStack API and displays current weather for a specific location.
-A frontend static site is built with Vite, React Typescript, CSS and TailwindCss.
+A frontend static site is built with Vite, React Typescript, CSS and TailwindCss. Backend built with Node.js, Express. Backend deployed with Docker for Render.
 
 ### Technologies & References
 
-- Vite, React Typescript, CSS, TailwindCSS, Docker, Node.js, ExpressRouter
+- Vite, React Typescript, CSS, TailwindCSS, Docker, Node.js, ExpressRouter,Render
 - Service Worker for caching data
 - WeatherStack API for current weather data
 - Visual Crossing API for historical and forecast data
@@ -35,6 +35,7 @@ A frontend static site is built with Vite, React Typescript, CSS and TailwindCss
 - Offline Notifier - if user is offline, it will display a message.
 - Backend server with Docker through Render. Node.js and ExpressRouter for serverside rendering. 
 - Backend handles all api calls and routing. Leaving the Frontend as a complete SPA for deployment on GH-pages.
+- API keys secure and not made visible to frontend user side.
 
 ## Output
 
