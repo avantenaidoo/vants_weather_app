@@ -9,7 +9,7 @@ const useWeatherByDays = (cityName: string, startDate: string, endDate: string) 
     const [errorDays, setErrorDays] = useState<Error | null>(null);
 
     useEffect(() => {
-
+        
         if (!cityName) return;
 
         setWeatherDays(null);
@@ -17,7 +17,7 @@ const useWeatherByDays = (cityName: string, startDate: string, endDate: string) 
 
         const fetchData = async () => {
             setLoadingDays(true);
-
+            
             try {
                 const data = await getWeatherData(cityName, startDate, endDate); 
                 setWeatherDays(data); 
@@ -37,8 +37,7 @@ const useWeatherByDays = (cityName: string, startDate: string, endDate: string) 
         fetchData(); 
 
     }, [cityName, startDate, endDate]); 
-
-  return { weatherDays, loadingDays, errorDays };
+    return { weatherDays, loadingDays, errorDays };
 };
 
 export default useWeatherByDays;

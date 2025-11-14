@@ -1,21 +1,24 @@
 import { VisualCrossingApiResponse } from '../types/weather';
+//import { checkCache } from '../utils/checkCache';
 
-const API_KEY = import.meta.env.VITE_VISUALCROSSING_API_KEY;
-const BASE_URL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline';
+//const API_KEY = import.meta.env.VITE_VISUALCROSSING_API_KEY;
+
+// Backend url no API key
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const fetchVisualCrossingData = async (query: string, startDate: string, endDate: string): Promise<VisualCrossingApiResponse | null> => {
   
   // Validate API key and query format
-  if (!API_KEY) { 
-    throw new Error('API access key not found.');
-  } else if (!query.trim()) {
+  if (!query.trim()) {
     throw new Error('No city name found, please try again.');
   } else if (/[^a-zA-Z\s]/.test(query) || /\s{2,}/.test(query)) {
     throw new Error('Only letters and single spaces are allowed.');
   }
 
   // Construct the API URL
-  const url = `${BASE_URL}/${query}/${startDate}/${endDate}?unitGroup=metric&include=days,current&key=${API_KEY}`;
+  //const url = `${BASE_URL}/${query}/${startDate}/${endDate}?unitGroup=metric&include=days,current&key=${API_KEY}`;
+
+  const url = `${BASE_URL}/api/visualcrossing?cityName=${query}&startDate=${startDate}&endDate=${endDate}`;
   
   try {
     const response = await fetch(url);
@@ -47,7 +50,7 @@ const fetchVisualCrossingData = async (query: string, startDate: string, endDate
     if (error instanceof TypeError) {
       throw new Error('Unable to fetch data. Please check your connection.');
     } else if (error instanceof Error) {
-      throw error; // Rethrow known errors
+      throw error; 
     } else {
       throw new Error('An unknown error occurred.');
     }
@@ -60,9 +63,5 @@ export const getWeatherData = async (city: string, startDate: string, endDate: s
     if (!data) {
         return null;
     }
-
-    // Log the data before returning
-    // console.log('Returning Data:', data);
-
     return data;
 };

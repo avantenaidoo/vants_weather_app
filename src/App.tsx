@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CurrentWeather from './components/CurrentWeather';
 import SearchBar from './components/SearchBar';
 import WeatherGrid from './components/WeatherGrid';
@@ -16,20 +16,25 @@ const App = () => {
   const [city, setCity] = useState<string>(''); 
   const [tile, setTile] = useState<Days | null>(null);
   const [showTile, setShowTile] = useState<boolean>(false);
+  const [delayRender, setDelayRender] = useState<boolean>(false);
   
 
   const { weatherData, loading, error } = useWeatherData(city);
 
   // Extract city name from weatherData for Visual Crossing url endpoint
-  const cityName = weatherData?.location.name || '';
+  //const cityName = error? city : weatherData?.location.name || '';
+  const cityName = city === ''? '': error ? city : weatherData?.location.name || '';
+
 
   // Extract localtime from weatherData
-  const localtime = weatherData?.location.localtime || '';
+  const localtime = error ? new Date().toISOString() : weatherData?.location.localtime || '';
 
   // Calculate dates for Visual Crossing url endpoint
   const { startDate, endDate } = calculateDates(localtime);
 
   const { weatherDays } = useWeatherByDays(cityName, startDate, endDate);
+
+  const currentWeather = error ? weatherDays : weatherData;
 
   const handleSearch = (city: string) => {
 
@@ -38,12 +43,30 @@ const App = () => {
 
   const handleTileClick = (day: Days) => {
     setTile(day);
-    setShowTile(true);
+
+    setTimeout(() => {
+      setShowTile(true);
+    }, 50);
   };
 
   const handleCloseTile = () => {
     setShowTile(false);
   };
+
+  useEffect(() => {
+
+    if (error) {
+      const timer = setTimeout(() => {
+        setDelayRender(true);  
+      }, 3000);
+  
+
+      return () => clearTimeout(timer);
+    } else {
+
+      setDelayRender(true);
+    }
+  }, [error]);  
 
   return (
     <div className="app-container 
@@ -62,11 +85,13 @@ const App = () => {
       {/* Pass handleSearch function and loading state to SearchBar */}
       <SearchBar onSearch={handleSearch} loading={loading} />
 
-      {/* Show weather data in CurrentWeather */}
-      <CurrentWeather weatherData={weatherData} error={error} />
+      {/* Show weather data in CurrentWeather value either weatherStack or visual crossing*/}
+      <CurrentWeather currentWeather={currentWeather} error={error} />
 
-      {/* Pass weatherDays to WeatherGrid */}
-      <WeatherGrid weatherDays={ weatherDays?.days || null } onTileClick={ handleTileClick }/>
+      {/* Conditionally render with delay if error from api1. Pass weatherDays to WeatherGrid */}
+      {delayRender && (
+        <WeatherGrid weatherDays={ weatherDays?.days || null } onTileClick={ handleTileClick }/>
+        )}
 
       {/* Show selected tile in TileDisplay */}
       <TileDisplay tile={tile} onClose={handleCloseTile} showTile={showTile}/>     

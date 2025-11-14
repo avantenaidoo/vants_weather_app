@@ -1,13 +1,12 @@
   import { WeatherData, WeatherStackAPIResponse } from '../types/weather';
 
-  const API_KEY = import.meta.env.VITE_WEATHERSTACK_API_KEY;
-  const BASE_URL = 'https://api.weatherstack.com/current';
+  //const API_KEY = import.meta.env.VITE_WEATHERSTACK_API_KEY;
+
+  // Backend url no api key
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   const fetchWeatherData = async (query: string): Promise<WeatherStackAPIResponse | null> => {
-    if (!API_KEY) {
-      throw new Error('API access key not found.');
-    } 
-
+    
     if (!query.trim()) {
       throw new Error('No city name found, please try again.');
     }
@@ -16,7 +15,7 @@
       throw new Error('Only letters and single spaces are allowed.');
     }
 
-    const url = `${BASE_URL}?access_key=${API_KEY}&query=${query}`; 
+    const url = `${BASE_URL}/api/weatherstack?city=${query}`; 
     
     try {
       const response = await fetch(url);
@@ -37,9 +36,8 @@
           case 404:
             throw new Error('Invalid location.');
           case 104:
-            throw new Error('API monthly rate limit reached. Please try again next month.');
+            throw new Error('WeatherStack API monthly rate limit reached. Please try again next month. Before you leave, count to 3 🍃');
           default:
-            console.log(data.error);
             throw new Error(`😲 Whoops! There is no data for your search, "${query}". Please check your spelling or try a different city name 😁`);
         }
       }
