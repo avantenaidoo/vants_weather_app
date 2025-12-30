@@ -1,29 +1,30 @@
 import { VisualCrossingApiResponse } from '../types/weather';
-//import { checkCache } from '../utils/checkCache';
 
-//const API_KEY = import.meta.env.VITE_VISUALCROSSING_API_KEY;
+// Always use relative path (works for Vercel Dev and production)
+const BASE_URL = ''; // no localhost:3000 here
 
-// Backend url no API key
-const BASE_URL = import.meta.env.VITE_BACKEND_URL;
-
-const fetchVisualCrossingData = async (query: string, startDate: string, endDate: string): Promise<VisualCrossingApiResponse | null> => {
-  
-  // Validate API key and query format
-  if (!query.trim()) {
-    throw new Error('No city name found, please try again.');
-  } else if (/[^a-zA-Z\s]/.test(query) || /\s{2,}/.test(query)) {
+const fetchVisualCrossingData = async (
+  query: string,
+  startDate: string,
+  endDate: string
+): Promise<VisualCrossingApiResponse | null> => {
+  // Validate input
+  if (!query.trim()) throw new Error('No city name found.');
+  if (/[^a-zA-Z\s]/.test(query) || /\s{2,}/.test(query)) {
     throw new Error('Only letters and single spaces are allowed.');
   }
 
-  // Construct the API URL
-  //const url = `${BASE_URL}/${query}/${startDate}/${endDate}?unitGroup=metric&include=days,current&key=${API_KEY}`;
+  // Encode query parameters to avoid 400 errors
+  const encodedCity = encodeURIComponent(query);
+  const encodedStart = encodeURIComponent(startDate);
+  const encodedEnd = encodeURIComponent(endDate);
 
-  const url = `${BASE_URL}/api/visualcrossing?cityName=${query}&startDate=${startDate}&endDate=${endDate}`;
-  
+  // Use relative URL
+  const url = `${BASE_URL}/api/visualcrossing?cityName=${encodedCity}&startDate=${encodedStart}&endDate=${encodedEnd}`;
+
   try {
     const response = await fetch(url);
-    
-    // Check for response errors
+
     if (!response.ok) {
       switch (response.status) {
         case 400:
@@ -31,37 +32,34 @@ const fetchVisualCrossingData = async (query: string, startDate: string, endDate
         case 401:
           throw new Error('Invalid API key entered.');
         case 404:
-          throw new Error(`😲 Whoops! There is no info for your search, "${query}". Please check your spelling or try a different city name 😁`);
+          throw new Error(`No info for "${query}".`);
         case 429:
-          throw new Error('API monthly rate limit reached. Please try again next month.');
+          throw new Error('API monthly rate limit reached.');
         case 500:
-          throw new Error('Internal server error. Please try again later.');
+          throw new Error('Internal server error.');
         default:
           throw new Error(`${response.status}`);
       }
     }
 
     const data: VisualCrossingApiResponse = await response.json();
-
     return data;
-
   } catch (error) {
-    // Handle network or other errors
     if (error instanceof TypeError) {
-      throw new Error('Unable to fetch data. Please check your connection.');
+      throw new Error('Unable to fetch data. Check your connection.');
     } else if (error instanceof Error) {
-      throw error; 
+      throw error;
     } else {
       throw new Error('An unknown error occurred.');
     }
   }
 };
 
-export const getWeatherData = async (city: string, startDate: string, endDate: string): Promise<VisualCrossingApiResponse | null> => {
-    const data = await fetchVisualCrossingData(city, startDate, endDate);
-
-    if (!data) {
-        return null;
-    }
-    return data;
+export const getWeatherData = async (
+  city: string,
+  startDate: string,
+  endDate: string
+): Promise<VisualCrossingApiResponse | null> => {
+  const data = await fetchVisualCrossingData(city, startDate, endDate);
+  return data || null;
 };

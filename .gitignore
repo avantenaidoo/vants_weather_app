@@ -69,3 +69,5 @@ desktop.ini
 # Test reports 
 coverage/
 .nyc_output/
+
+.vercel
