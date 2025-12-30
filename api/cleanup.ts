@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'http';
-import { cleanupAllLogs } from "../backend/server/src/utils/cleanupLogs.js";
+import { cleanupAllLogs } from "../backend/server/src/utils/cleanupLogs.ts";
 
 // Minimal types for Vercel serverless
 type VercelRequest = IncomingMessage & { body?: any; query?: Record<string, string> };

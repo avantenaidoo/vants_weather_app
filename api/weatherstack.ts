@@ -1,5 +1,5 @@
 // /api/weatherstack.ts
-import { fetchWeatherStackData } from './apiHelpers.js';
+import { fetchWeatherStackData } from './apiHelpers.ts';
 
 export default async function handler(req: any, res: any) {
   try {

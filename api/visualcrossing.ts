@@ -1,5 +1,5 @@
 // /api/visualcrossing.ts
-import { fetchVisualCrossingData } from './apiHelpers.js';
+import { fetchVisualCrossingData } from './apiHelpers.ts';
 
 export default async function handler(req: any, res: any) {
   try {
