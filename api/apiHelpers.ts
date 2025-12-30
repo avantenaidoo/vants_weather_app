@@ -1,5 +1,5 @@
 // /api/apiHelpers.ts
-import { getConfig } from './config.ts';
+import { getConfig } from './config.js';
 
 const config = getConfig();
 
