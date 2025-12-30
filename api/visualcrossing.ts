@@ -1,5 +1,5 @@
 // /api/visualcrossing.ts
-import { fetchVisualCrossingData } from '../backend/server/src/controllers/apiHelpers.js';
+import { fetchVisualCrossingData } from './apiHelpers.js';
 
 export default async function handler(req: any, res: any) {
   try {
@@ -8,17 +8,15 @@ export default async function handler(req: any, res: any) {
     const endDate = (req.query.endDate as string)?.trim();
 
     if (!cityName || !startDate || !endDate) {
-      return res.status(400).json({ error: 'Missing one or more required query parameters' });
+      return res.status(400).json({ error: 'Missing cityName, startDate, or endDate parameter' });
     }
 
-    // Encode city to handle spaces/special characters
-    const encodedCity = encodeURIComponent(cityName);
-
-    const data = await fetchVisualCrossingData(encodedCity, startDate, endDate);
+    // Do NOT encode here — the helper already handles encoding
+    const data = await fetchVisualCrossingData(cityName, startDate, endDate);
 
     res.status(200).json(data);
   } catch (err: any) {
-    console.error(err); // Log backend errors
-    res.status(400).json({ error: err.message || 'Unknown error' });
+    console.error('Server error in /api/visualcrossing:', err);
+    res.status(500).json({ error: err.message || 'Unknown server error' });
   }
 }

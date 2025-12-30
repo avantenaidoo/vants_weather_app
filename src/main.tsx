@@ -11,7 +11,7 @@ createRoot(document.getElementById('root')!).render(
 
 // Custom service worker registration
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/vants_weather_app/service-worker.js')
+  navigator.serviceWorker.register('/service-worker.js')
     .then((registration) => {
       console.log('Service Worker registered with scope:', registration.scope);
     })

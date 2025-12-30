@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import { logErrors, logEvents, logRequests } from "./middleware/logEvents.js";
 import apiRoutes from "./routes/apiRoutes.js";
-import { config } from "./config/config.js";
+import { config } from "../../../api/config.js";
 import limiter from "./middleware/rateLimiter.js";
 
 const app = express();

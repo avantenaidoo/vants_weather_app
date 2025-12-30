@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { validationResult } from "express-validator";
-import { config } from '../config/config.js';
+import { config } from '../../../../api/config.js';
 
 // Controller function to fetch data from the API
 export const getWeatherStackData = async (req: Request, res: Response): Promise<void> => {
