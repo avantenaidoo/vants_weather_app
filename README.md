@@ -53,6 +53,9 @@ A frontend static site is built with Vite, React Typescript, CSS and TailwindCss
 [Live Demo](https://avantenaidoo.github.io/vants_weather_app/)
 *located in "gh-pages" branch of this repository*
 
+[Live Application](https://avantenaidoo.github.io/vants_weather_app/](https://vants-weather-app.vercel.app/))
+*Deplaoyed with Vercel*
+
 [Back to Top](#vants-weather-app)
 
 ## Installation
